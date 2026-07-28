@@ -84,7 +84,7 @@ export function Quiz() {
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="w-full max-w-4xl"
         >
-          <Card className="w-full p-[40px] md:p-[64px] shadow-[var(--shadow-premium)] mb-10">
+          <Card className="w-full p-[40px] md:p-[64px] shadow-[var(--shadow-premium)] mb-10 border-4 border-[#ECF95A]">
             <h2 className="text-headline-lg md:text-headline-xl font-display font-semibold mb-10 leading-snug">
               {currentQuestion.question}
             </h2>
@@ -92,7 +92,7 @@ export function Quiz() {
             <div className="space-y-4">
               {currentQuestion.options.map((option, idx) => {
                 const isSelected = selectedOption === idx;
-                let optionStyle = 'border-[var(--color-charcoal)]/10 hover:border-[var(--color-lime)] hover:bg-[var(--color-surface-hover)]';
+                let optionStyle = 'border-[#7B1E2B] hover:border-[var(--color-lime)] hover:bg-[var(--color-surface-hover)]';
                 
                 if (isAnswered) {
                   if (idx === currentQuestion.correctIndex) {
@@ -100,7 +100,7 @@ export function Quiz() {
                   } else if (isSelected && !currentQuestion.correctIndex !== idx) {
                     optionStyle = 'border-red-500 bg-red-50 text-red-900 opacity-60';
                   } else {
-                    optionStyle = 'border-[var(--color-charcoal)]/10 opacity-40';
+                    optionStyle = 'border-[#7B1E2B]/40 opacity-40';
                   }
                 } else if (isSelected) {
                   optionStyle = 'border-[var(--color-lime)] bg-[var(--color-lime)]/10';

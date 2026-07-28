@@ -9,8 +9,7 @@ import { motion } from 'framer-motion';
 export function Dashboard() {
   const { sessions } = useStudy();
   
-  // Get up to 3 recent sessions
-  const recentSessions = sessions.slice(0, 3);
+  const allSessions = sessions;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -74,17 +73,12 @@ export function Dashboard() {
 
       <motion.div variants={containerVariants} className="w-full">
         <motion.div variants={itemVariants} className="flex justify-between items-center mb-8">
-          <h2 className="text-headline-lg font-display font-bold">Recent Activity</h2>
-          {sessions.length > 3 && (
-            <Link to="/library" className="text-body-md font-bold text-[var(--color-charcoal)] hover:underline flex items-center">
-              View all <ChevronRight className="ml-1 h-5 w-5" />
-            </Link>
-          )}
+          <h2 className="text-headline-lg font-display font-bold">All Sessions</h2>
         </motion.div>
 
-        {recentSessions.length > 0 ? (
+        {allSessions.length > 0 ? (
           <div className="grid gap-[24px]">
-            {recentSessions.map(session => (
+            {allSessions.map(session => (
               <motion.div key={session.id} variants={itemVariants}>
                 <Link to={`/study/${session.id}/summary`}>
                   <Card className="p-[40px] flex items-center justify-between shadow-sm">

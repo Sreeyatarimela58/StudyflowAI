@@ -1,149 +1,152 @@
-import { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Check, X, ArrowRight } from 'lucide-react';
-import { Card } from '../components/Card';
-import { Button } from '../components/Button';
-import { ProgressBar } from '../components/ProgressBar';
+import { motion } from 'framer-motion';
+import { CheckCircle2, XCircle, RefreshCw, ArrowRight, History } from 'lucide-react';
+import { useStudy } from '../contexts/StudyContext';
+import { EmptyState } from '../components/EmptyState';
 
 export function QuizReview() {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   
+  // Try to get results from router state, otherwise fallback to context or redirect
   const initialResults = location.state?.results || [];
   const incorrectResults = initialResults.filter(r => !r.isCorrect);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [isAnswered, setIsAnswered] = useState(false);
-
   if (incorrectResults.length === 0) {
-    navigate(`/study/${id}/summary`);
-    return null;
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center pt-20">
+        <EmptyState 
+          title="Nothing to review!" 
+          message="You got everything right, or there are no results available." 
+        />
+        <button 
+          onClick={() => navigate(`/study/${id}/summary`)}
+          className="mt-8 bg-[var(--color-tertiary-fixed)] text-[var(--color-on-tertiary-fixed)] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[14px] hover:scale-105 transition-transform"
+        >
+          Return to Summary
+        </button>
+      </div>
+    );
   }
 
-  const currentResult = incorrectResults[currentIndex];
-  const currentQuestion = currentResult.question;
-  const progress = (currentIndex / incorrectResults.length) * 100;
-
-  const handleSelect = (index) => {
-    if (!isAnswered) {
-      setSelectedOption(index);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, ease: [0.16, 1, 0.3, 1] }
     }
   };
 
-  const handleSubmit = () => {
-    if (!isAnswered && selectedOption !== null) {
-      setIsAnswered(true);
-    } else if (isAnswered) {
-      if (currentIndex < incorrectResults.length - 1) {
-        setCurrentIndex(prev => prev + 1);
-        setSelectedOption(null);
-        setIsAnswered(false);
-      } else {
-        // Finished reviewing
-        navigate(`/study/${id}/summary`);
-      }
-    }
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
   };
 
   return (
-    <div className="flex flex-col items-center min-h-[calc(100svh-100px)] w-full max-w-[1280px] mx-auto px-6 py-[40px]">
-      <div className="w-full flex items-center justify-between mb-8 max-w-4xl">
-        <Button variant="ghost" size="sm" onClick={() => navigate(`/study/${id}/summary`)} className="px-4">
-          <X className="mr-2 h-5 w-5" />
-          Skip Review
-        </Button>
-        <div className="text-label-sm font-bold font-mono tracking-wider text-[var(--color-error)] uppercase">
-          Reviewing {currentIndex + 1} of {incorrectResults.length}
+    <motion.main 
+      className="flex-grow w-full max-w-[1280px] mx-auto px-[20px] md:px-[64px] py-16 md:py-[120px]"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
+      {/* Page Header */}
+      <motion.header variants={itemVariants} className="mb-16 md:mb-24 max-w-3xl">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-surface-container-high)] border border-[var(--color-charcoal)]/10 mb-8">
+          <History className="w-4 h-4 text-[var(--color-secondary)]" />
+          <span className="font-label text-[12px] text-[var(--color-secondary)] uppercase tracking-widest font-bold">Quiz Review</span>
         </div>
-      </div>
+        <h1 className="font-display text-[48px] md:text-[77px] font-extrabold tracking-[-0.05em] leading-[0.95] text-[var(--color-primary)] mb-6 text-balance">
+          Review Mistakes
+        </h1>
+        <p className="font-body text-[23px] text-[var(--color-on-surface-variant)] max-w-2xl leading-relaxed">
+          You missed {incorrectResults.length} question{incorrectResults.length === 1 ? '' : 's'} on your recent quiz. Reviewing these now will help solidify the concepts in your long-term memory.
+        </p>
+      </motion.header>
 
-      <ProgressBar progress={progress} className="mb-[64px] max-w-4xl w-full" />
-
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full max-w-4xl"
-        >
-          <Card className="w-full p-[40px] md:p-[64px] shadow-[var(--shadow-premium)] mb-10 border-t-[8px] border-t-[var(--color-error)]">
-            <div className="bg-[var(--color-error-bg)] text-[var(--color-error)] px-3 py-1 rounded-full text-label-sm font-bold uppercase tracking-widest w-fit mb-8">
-              Incorrectly Answered
-            </div>
-            <h2 className="text-headline-lg md:text-headline-xl font-display font-semibold mb-10 leading-snug">
-              {currentQuestion.question}
-            </h2>
-
-            <div className="space-y-4">
-              {currentQuestion.options.map((option, idx) => {
-                const isSelected = selectedOption === idx;
-                let optionStyle = 'border-[var(--color-charcoal)]/10 hover:border-[var(--color-lime)] hover:bg-[var(--color-surface-hover)]';
+      {/* Questions List */}
+      <div className="flex flex-col gap-12 md:gap-16">
+        {incorrectResults.map((result, index) => {
+          const q = result.question;
+          const isMultipleChoice = q.type !== 'fill-in-the-blank';
+          
+          return (
+            <motion.article 
+              key={index} 
+              variants={itemVariants}
+              className="bg-[#ECF95A] rounded-[32px] p-6 md:p-[40px] border border-[var(--color-primary)]/5 shadow-[var(--shadow-premium)] relative overflow-hidden group"
+            >
+              {/* Subtle background accent */}
+              <div className="absolute top-0 left-0 w-2 h-full bg-[var(--color-error)]/20"></div>
+              
+              <div className="flex justify-between items-start mb-8">
+                <span className="font-label text-[12px] font-bold text-[var(--color-secondary)] uppercase tracking-widest">Question {index + 1}</span>
+                <span className="bg-[#f4f4f2] border border-[var(--color-charcoal)]/10 text-[var(--color-on-surface-variant)] px-3 py-1.5 rounded-full font-label text-[12px] font-bold uppercase">
+                  {isMultipleChoice ? 'Multiple Choice' : 'Fill in the Blank'}
+                </span>
+              </div>
+              
+              <h3 className="font-display text-[28px] md:text-[37px] font-semibold text-black mb-10 max-w-4xl leading-snug">
+                {q.question}
+              </h3>
+              
+              <div className={`grid grid-cols-1 ${isMultipleChoice ? 'lg:grid-cols-2' : ''} gap-6 lg:gap-[24px] mb-10`}>
                 
-                if (isAnswered) {
-                  if (idx === currentQuestion.correctIndex) {
-                    optionStyle = 'border-green-500 bg-green-50 text-green-900';
-                  } else if (isSelected && !currentQuestion.correctIndex !== idx) {
-                    optionStyle = 'border-red-500 bg-red-50 text-red-900 opacity-60';
-                  } else {
-                    optionStyle = 'border-[var(--color-charcoal)]/10 opacity-40';
-                  }
-                } else if (isSelected) {
-                  optionStyle = 'border-[var(--color-lime)] bg-[var(--color-lime)]/10';
-                }
-
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => handleSelect(idx)}
-                    disabled={isAnswered}
-                    className={`w-full text-left p-[24px] rounded-[16px] border-[2px] transition-all duration-300 flex items-center justify-between ${optionStyle}`}
-                  >
-                    <span className="text-body-lg font-medium">{option}</span>
-                    {isAnswered && idx === currentQuestion.correctIndex && (
-                      <Check className="h-6 w-6 text-green-600" />
+                {/* Wrong Answer */}
+                <div className="bg-[#F4F4F2] border border-[var(--color-error)]/20 rounded-2xl p-6 flex gap-4">
+                  <XCircle className="w-6 h-6 text-[var(--color-error)] mt-0.5 shrink-0" />
+                  <div>
+                    <p className="font-label text-[12px] font-bold text-[var(--color-error)] uppercase mb-3 tracking-wider">Your Answer</p>
+                    <div className="relative inline-block">
+                      <p className="font-body text-[23px] text-[#93000a] font-medium">{result.userAnswer || "No answer provided"}</p>
+                      <div className="absolute left-0 top-1/2 w-full h-[2px] bg-[var(--color-error)] opacity-60"></div>
+                    </div>
+                    {isMultipleChoice && (
+                      <p className="font-body text-[16px] text-black mt-3">
+                        {q.explanation || "This answer is incorrect based on the core principles of the topic."}
+                      </p>
                     )}
-                  </button>
-                );
-              })}
-            </div>
+                  </div>
+                </div>
 
-            {isAnswered && (
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-10 p-[32px] bg-[#F4F4F2] rounded-[16px] border border-[var(--color-charcoal)]/5"
-              >
-                <h4 className="font-bold text-label-sm uppercase tracking-widest text-[var(--color-gray)] mb-3">Explanation</h4>
-                <p className="text-body-lg text-[var(--color-gray)] leading-relaxed">
-                  {currentQuestion.explanation}
-                </p>
-              </motion.div>
-            )}
-          </Card>
-        </motion.div>
-      </AnimatePresence>
+                {/* Correct Answer */}
+                <div className="bg-[#F4F4F2] border border-[var(--color-secondary)]/20 rounded-2xl p-6 flex gap-4">
+                  <CheckCircle2 className="w-6 h-6 text-[#626655] mt-0.5 shrink-0" />
+                  <div>
+                    <p className="font-label text-[12px] font-bold text-[#626655] uppercase mb-3 tracking-wider">Correct Answer</p>
+                    <p className="font-body text-[23px] text-[var(--color-charcoal)] font-semibold">{q.options ? q.options[q.correctIndex] : q.correctAnswer}</p>
+                    {isMultipleChoice && (
+                      <p className="font-body text-[16px] text-[var(--color-on-surface-variant)] mt-3">
+                        {q.explanation || "This is the officially recognized correct terminology and concept."}
+                      </p>
+                    )}
+                  </div>
+                </div>
 
-      <div className="w-full max-w-4xl flex justify-end">
-        <Button 
-          onClick={handleSubmit} 
-          disabled={selectedOption === null}
-          size="lg"
-          className="w-full sm:w-auto px-12"
-        >
-          {isAnswered ? (
-            currentIndex < incorrectResults.length - 1 ? 'Next Question' : 'Finish Review'
-          ) : (
-            'Check Answer'
-          )}
-          {isAnswered && <ArrowRight className="ml-2 h-5 w-5" />}
-        </Button>
+              </div>
+
+              {/* Action Row */}
+              <div className="flex justify-end pt-8 border-t border-[var(--color-charcoal)]/10">
+                <button className="inline-flex items-center gap-3 border border-[var(--color-primary)] text-[var(--color-primary)] px-8 py-4 rounded-full hover:bg-[var(--color-surface-hover)] transition-colors duration-200">
+                  <RefreshCw className="w-5 h-5" />
+                  <span className="font-label text-[12px] font-bold uppercase tracking-widest">Retry Question</span>
+                </button>
+              </div>
+            </motion.article>
+          );
+        })}
       </div>
-    </div>
+
+      {/* Completion Action */}
+      <motion.div variants={itemVariants} className="flex justify-center mt-12 md:mt-20">
+        <button 
+          onClick={() => navigate(`/study/${id}/progress`)}
+          className="inline-flex items-center gap-3 bg-[var(--color-tertiary-fixed)] text-[var(--color-on-tertiary-fixed)] px-10 py-5 rounded-full hover:scale-105 transition-transform duration-200"
+        >
+          <span className="font-label text-[14px] uppercase font-bold tracking-widest">Return to Dashboard</span>
+          <ArrowRight className="w-5 h-5" />
+        </button>
+      </motion.div>
+    </motion.main>
   );
 }

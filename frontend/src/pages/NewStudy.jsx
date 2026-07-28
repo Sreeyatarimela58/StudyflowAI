@@ -49,14 +49,14 @@ export function NewStudy() {
       variants={containerVariants}
     >
       <motion.div variants={itemVariants} className="w-full mb-[80px] text-center max-w-3xl mx-auto">
-        <h1 className="text-headline-xl font-display font-bold mb-4">What are we learning today?</h1>
+        <h1 className="text-headline-xl font-display font-bold mb-4 italic">What are we learning today?</h1>
         <p className="text-body-lg text-[var(--color-gray)] mx-auto">
           Paste your notes, syllabus, or just a topic. Our AI will structure it into a comprehensive study session.
         </p>
       </motion.div>
 
       <motion.div variants={itemVariants} className="w-full max-w-4xl mx-auto">
-        <Card className="w-full p-[40px] md:p-[64px]">
+        <Card className="w-full p-[40px] md:p-[64px] border-2 border-[#7B1E2B]">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-[32px]">
           
           <div>
@@ -68,7 +68,7 @@ export function NewStudy() {
               id="title" 
               placeholder="e.g. Introduction to Cellular Biology"
               {...register('title')}
-              className="py-5 text-body-lg"
+              className="py-5 text-body-lg border-2 border-black bg-white text-black placeholder:text-gray-500"
             />
           </div>
 
@@ -83,7 +83,7 @@ export function NewStudy() {
             <Textarea 
               id="content" 
               placeholder="Paste your notes here..."
-              className="min-h-[250px] text-lg"
+              className="min-h-[250px] text-lg border-2 border-black bg-white text-black placeholder:text-gray-500"
               {...register('content', { 
                 required: 'Please provide some material to study',
                 minLength: { value: 20, message: 'Please provide at least 20 characters of material.' }

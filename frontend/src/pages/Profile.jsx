@@ -38,7 +38,7 @@ export function Profile() {
 
   return (
     <motion.div 
-      className="flex flex-col items-center w-full max-w-[1280px] mx-auto px-6 py-[64px]"
+      className="flex flex-col items-center w-full px-6 py-[64px] md:px-[80px]"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -48,42 +48,42 @@ export function Profile() {
         <p className="text-body-lg text-[var(--color-gray)]">Manage your account and view statistics.</p>
       </motion.div>
 
-      <motion.div variants={containerVariants} className="grid md:grid-cols-3 gap-[32px] w-full max-w-5xl">
-        <motion.div variants={itemVariants} className="md:col-span-1 space-y-[32px]">
-          <Card className="p-[40px] flex flex-col items-center text-center h-full min-h-[400px]">
-            <div className="bg-[#E2E3E1] h-32 w-32 rounded-full flex items-center justify-center mb-8 border-[6px] border-white shadow-sm">
-              <User className="h-16 w-16 text-[var(--color-gray)]" />
+      <motion.div variants={containerVariants} className="grid md:grid-cols-3 gap-[64px] w-full">
+        <motion.div variants={itemVariants} className="md:col-span-1 space-y-[64px]">
+          <Card className="p-[64px] md:p-[100px] flex flex-col items-center text-center h-full min-h-[500px] border-2 border-red-500">
+            <div className="bg-[#E2E3E1] h-40 w-40 rounded-full flex items-center justify-center mb-10 border-[8px] border-white shadow-sm">
+              <User className="h-20 w-20 text-[var(--color-gray)]" />
             </div>
-            <h2 className="text-headline-lg font-display font-bold mb-2">{user?.name || 'Student'}</h2>
-            <p className="text-body-lg text-[var(--color-gray)] mb-10">{user?.email || 'student@example.com'}</p>
+            <h2 className="text-headline-lg font-display font-bold mb-4">{user?.name || 'Student'}</h2>
+            <p className="text-body-lg text-[var(--color-gray)] mb-12">{user?.email || 'student@example.com'}</p>
             
-            <Button variant="ghost" className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 mt-auto" onClick={handleLogout}>
-              <LogOut className="mr-3 h-5 w-5" />
+            <Button variant="ghost" className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 mt-auto py-6 text-[20px]" onClick={handleLogout}>
+              <LogOut className="mr-4 h-6 w-6" />
               Log Out
             </Button>
           </Card>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="md:col-span-2 space-y-[32px]">
-          <Card className="p-[40px] md:p-[64px] h-full min-h-[400px]">
-            <h3 className="text-headline-lg font-display font-bold mb-10">Learning Statistics</h3>
+        <motion.div variants={itemVariants} className="md:col-span-2 space-y-[64px]">
+          <Card className="p-[64px] md:p-[100px] h-full min-h-[500px] border-2 border-red-500">
+            <h3 className="text-headline-lg font-display font-bold mb-12">Learning Statistics</h3>
             
-            <div className="grid sm:grid-cols-3 gap-[24px]">
-              <div className="bg-[#F4F4F2] p-8 rounded-[16px] flex flex-col items-center text-center">
-                <FileText className="h-8 w-8 text-[var(--color-gray)] mb-6" />
-                <span className="text-headline-xl font-display font-bold mb-3">{totalSessions}</span>
+            <div className="grid sm:grid-cols-3 gap-[48px]">
+              <div className="bg-[#F4F4F2] p-[48px] rounded-[24px] flex flex-col items-center text-center border-2 border-red-500">
+                <FileText className="h-12 w-12 text-[var(--color-gray)] mb-8" />
+                <span className="text-headline-xl font-display font-bold mb-4">{totalSessions}</span>
                 <span className="text-label-sm font-bold uppercase tracking-widest text-[var(--color-gray)]">Sessions</span>
               </div>
               
-              <div className="bg-[var(--color-lime)]/20 p-8 rounded-[16px] flex flex-col items-center text-center">
-                <Settings className="h-8 w-8 text-[var(--color-charcoal)] mb-6" />
-                <span className="text-headline-xl font-display font-bold mb-3">{totalFlashcards}</span>
+              <div className="bg-[var(--color-lime)]/20 p-[48px] rounded-[24px] flex flex-col items-center text-center border-2 border-red-500">
+                <Settings className="h-12 w-12 text-[var(--color-charcoal)] mb-8" />
+                <span className="text-headline-xl font-display font-bold mb-4">{totalFlashcards}</span>
                 <span className="text-label-sm font-bold uppercase tracking-widest text-[var(--color-charcoal-muted)]">Flashcards</span>
               </div>
               
-              <div className="bg-green-50 p-8 rounded-[16px] flex flex-col items-center text-center">
-                <CheckCircle2 className="h-8 w-8 text-green-600 mb-6" />
-                <span className="text-headline-xl font-display font-bold mb-3">{totalQuestions}</span>
+              <div className="bg-green-50 p-[48px] rounded-[24px] flex flex-col items-center text-center border-2 border-red-500">
+                <CheckCircle2 className="h-12 w-12 text-green-600 mb-8" />
+                <span className="text-headline-xl font-display font-bold mb-4">{totalQuestions}</span>
                 <span className="text-label-sm font-bold uppercase tracking-widest text-green-700">Questions</span>
               </div>
             </div>

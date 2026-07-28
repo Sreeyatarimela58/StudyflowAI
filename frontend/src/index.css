@@ -13,6 +13,7 @@
   --color-gray-light: #E2E3E1;
   --color-error: #BA1A1A;
   --color-error-bg: #FFDAD6;
+  --color-background: #F9F9F7;
   
   --font-display: 'Manrope', sans-serif;
   --font-body: 'Hanken Grotesk', sans-serif;
@@ -25,17 +26,24 @@
   --shadow-premium: 0 40px 80px -20px rgba(25, 19, 20, 0.05), 0 0 0 1px rgba(25, 19, 20, 0.08);
   --shadow-premium-hover: 0 50px 100px -20px rgba(25, 19, 20, 0.08), 0 0 0 1px rgba(25, 19, 20, 0.12);
 
-  --text-display-lg: 72px;
-  --text-headline-xl: 48px;
-  --text-headline-lg: 32px;
-  --text-body-lg: 18px;
-  --text-body-md: 16px;
-  --text-label-sm: 12px;
+  --text-display-lg: 77px;
+  --text-headline-xl: 53px;
+  --text-headline-lg: 37px;
+  --text-body-lg: 23px;
+  --text-body-md: 21px;
+  --text-label-sm: 17px;
+
+  --animate-marquee: marquee 40s linear infinite;
+  
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
 }
 
 @layer base {
   body {
-    background-color: var(--color-sage);
+    background-color: var(--color-background);
     color: var(--color-charcoal);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;

@@ -72,18 +72,18 @@ export function Flashcards() {
   return (
     <div className="flex flex-col items-center min-h-[calc(100svh-100px)] w-full max-w-[1280px] mx-auto px-6 py-[40px]">
       <div className="w-full flex items-center justify-between mb-8 max-w-4xl">
-        <Button variant="ghost" size="sm" onClick={() => navigate(`/study/${id}/summary`)} className="px-4">
-          <X className="mr-2 h-5 w-5" />
+        <Button variant="ghost" onClick={() => navigate(`/study/${id}/summary`)} className="px-6 py-4 text-[24px]">
+          <X className="mr-3 h-6 w-6" />
           End Session
         </Button>
-        <div className="text-label-sm font-bold font-mono tracking-wider text-[var(--color-gray)] uppercase">
+        <div className="text-[24px] font-bold font-mono tracking-wider text-[var(--color-gray)] uppercase">
           Card {currentIndex + 1} of {flashcards.length}
         </div>
       </div>
 
       <ProgressBar progress={progress} className="mb-[64px] max-w-4xl" />
 
-      <div className="relative w-full max-w-4xl aspect-[16/9] md:aspect-[2/1] perspective-1000">
+      <div className="relative w-full max-w-4xl aspect-[4/3] md:aspect-[3/2] perspective-1000">
         <AnimatePresence initial={false} mode="wait">
           <motion.div
             key={currentIndex + (isFlipped ? '-back' : '-front')}
@@ -94,16 +94,18 @@ export function Flashcards() {
             className="absolute inset-0 w-full h-full cursor-pointer"
             onClick={() => setIsFlipped(!isFlipped)}
           >
-            <Card className={`w-full h-full flex flex-col items-center justify-center p-[40px] md:p-[80px] text-center shadow-[var(--shadow-premium)] border-t-[8px] ${isFlipped ? 'border-t-[var(--color-lime)] bg-[var(--color-surface)]' : 'border-t-[var(--color-charcoal)] bg-[#F4F4F2]'}`}>
-              <span className="absolute top-8 right-10 text-label-sm font-bold uppercase tracking-widest text-[var(--color-gray)]">
-                {isFlipped ? 'Definition' : 'Concept'}
-              </span>
-              <p className={`text-headline-lg md:text-headline-xl font-display font-semibold leading-tight ${isFlipped ? 'text-[var(--color-charcoal)]' : 'text-[var(--color-charcoal)]'}`}>
-                {isFlipped ? currentCard.back : currentCard.front}
-              </p>
-              
-              <div className="absolute bottom-8 text-[var(--color-gray)] text-body-md font-medium flex items-center">
-                Click to flip <span className="ml-3 px-3 py-1 bg-[var(--color-gray-light)] rounded-[8px] text-label-sm font-mono hidden sm:inline-block">Space</span>
+            <Card className={`w-full h-full p-4 text-center shadow-[var(--shadow-premium)] border-4 border-[#ECF95A] ${isFlipped ? 'bg-[var(--color-surface)]' : 'bg-[#F4F4F2]'}`}>
+              <div className="w-full h-full flex flex-col items-center justify-center border-4 border-[#7B1E2B] relative p-8">
+                <span className="absolute top-4 right-6 text-label-sm font-bold uppercase tracking-widest text-[var(--color-gray)]">
+                  {isFlipped ? 'Definition' : 'Concept'}
+                </span>
+                <p className={`text-headline-lg md:text-headline-xl font-display font-semibold leading-tight ${isFlipped ? 'text-[var(--color-charcoal)]' : 'text-[var(--color-charcoal)]'}`}>
+                  {isFlipped ? currentCard.back : currentCard.front}
+                </p>
+                
+                <div className="absolute bottom-4 text-[var(--color-gray)] text-body-md font-medium flex items-center">
+                  Click to flip <span className="ml-3 px-3 py-1 bg-[var(--color-gray-light)] rounded-[8px] text-label-sm font-mono hidden sm:inline-block">Space</span>
+                </div>
               </div>
             </Card>
           </motion.div>
@@ -115,9 +117,9 @@ export function Flashcards() {
           variant="secondary" 
           onClick={handlePrev} 
           disabled={currentIndex === 0}
-          className="w-40"
+          className="w-48 py-6 text-[24px]"
         >
-          <ArrowLeft className="mr-3 h-5 w-5" />
+          <ArrowLeft className="mr-4 h-6 w-6" />
           Prev
         </Button>
         
@@ -125,10 +127,10 @@ export function Flashcards() {
           variant="primary" 
           onClick={handleNext} 
           disabled={currentIndex === flashcards.length - 1}
-          className="w-40"
+          className="w-48 py-6 text-[24px]"
         >
           Next
-          <ArrowRight className="ml-3 h-5 w-5" />
+          <ArrowRight className="ml-4 h-6 w-6" />
         </Button>
       </div>
     </div>

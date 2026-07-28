@@ -52,12 +52,12 @@ export function QuizResults() {
 
       <motion.div variants={containerVariants} className="grid md:grid-cols-3 gap-[24px] w-full max-w-4xl mb-[80px]">
         <motion.div variants={itemVariants} className="col-span-full md:col-span-1">
-          <Card className="p-[40px] flex flex-col items-center justify-center text-center bg-[var(--color-charcoal)] text-[var(--color-surface)] border-none h-full min-h-[300px]">
+          <Card className="p-[40px] flex flex-col items-center justify-center text-center bg-white text-black border-4 border-black h-full min-h-[400px]">
             <div className="relative mb-6">
               <svg className="w-32 h-32 transform -rotate-90">
                 <circle cx="64" cy="64" r="56" fill="transparent" stroke="currentColor" strokeWidth="12" className="opacity-20" />
                 <motion.circle 
-                  cx="64" cy="64" r="56" fill="transparent" stroke="var(--color-lime)" strokeWidth="12" 
+                  cx="64" cy="64" r="56" fill="transparent" stroke="#7B1E2B" strokeWidth="12" 
                   strokeDasharray="351.86" 
                   initial={{ strokeDashoffset: 351.86 }}
                   animate={{ strokeDashoffset: 351.86 - (351.86 * score) / 100 }}
@@ -65,28 +65,28 @@ export function QuizResults() {
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-headline-lg font-display font-bold text-[var(--color-lime)]">{score}%</span>
+                <span className="text-headline-lg font-display font-bold text-black">{score}%</span>
               </div>
             </div>
-            <h3 className="text-body-md font-bold uppercase tracking-widest text-[var(--color-surface-hover)] opacity-80">Accuracy</h3>
+            <h3 className="text-body-md font-bold uppercase tracking-widest text-black opacity-80">Accuracy</h3>
           </Card>
         </motion.div>
 
         <motion.div variants={itemVariants} className="col-span-full md:col-span-2 grid grid-cols-2 gap-[24px]">
-          <Card className="p-[40px] flex flex-col items-center justify-center text-center h-full min-h-[300px]">
+          <Card className="p-[40px] flex flex-col items-center justify-center text-center h-full min-h-[400px] bg-white border-4 border-black">
             <div className="bg-green-100 p-4 rounded-[16px] mb-6">
               <CheckCircle2 className="h-8 w-8 text-green-600" />
             </div>
-            <span className="text-headline-xl font-display font-bold mb-3">{correct}</span>
-            <span className="text-label-sm font-bold uppercase tracking-widest text-[var(--color-gray)]">Correct</span>
+            <span className="text-headline-xl font-display font-bold mb-3 text-black">{correct}</span>
+            <span className="text-label-sm font-bold uppercase tracking-widest text-black/60">Correct</span>
           </Card>
           
-          <Card className="p-[40px] flex flex-col items-center justify-center text-center h-full min-h-[300px]">
+          <Card className="p-[40px] flex flex-col items-center justify-center text-center h-full min-h-[400px] bg-white border-4 border-black">
             <div className="bg-red-100 p-4 rounded-[16px] mb-6">
               <XCircle className="h-8 w-8 text-red-600" />
             </div>
-            <span className="text-headline-xl font-display font-bold mb-3">{incorrect}</span>
-            <span className="text-label-sm font-bold uppercase tracking-widest text-[var(--color-gray)]">Incorrect</span>
+            <span className="text-headline-xl font-display font-bold mb-3 text-black">{incorrect}</span>
+            <span className="text-label-sm font-bold uppercase tracking-widest text-black/60">Incorrect</span>
           </Card>
         </motion.div>
       </motion.div>
@@ -95,7 +95,7 @@ export function QuizResults() {
         {incorrect > 0 && (
           <Button 
             size="lg" 
-            className="w-full sm:flex-1"
+            className="w-full sm:flex-1 bg-[#ECF95A] text-black hover:bg-[#c3cf33] border-2 border-black"
             onClick={() => navigate(`/study/${id}/quiz/review`, { state: { results } })}
           >
             <RotateCcw className="mr-3 h-5 w-5" />
@@ -104,9 +104,8 @@ export function QuizResults() {
         )}
         
         <Button 
-          variant={incorrect > 0 ? "secondary" : "primary"}
           size="lg" 
-          className="w-full sm:flex-1"
+          className="w-full sm:flex-1 bg-[#ECF95A] text-black hover:bg-[#c3cf33] border-2 border-black"
           onClick={() => navigate(`/study/${id}/summary`)}
         >
           Continue to Summary

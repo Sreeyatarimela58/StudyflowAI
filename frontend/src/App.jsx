@@ -18,6 +18,7 @@ import { QuizResults } from './pages/QuizResults';
 import { QuizReview } from './pages/QuizReview';
 import { Library } from './pages/Library';
 import { Profile } from './pages/Profile';
+import { Progress } from './pages/Progress';
 
 const ProtectedRoute = ({ children }) => {
   const { user, isLoading } = useAuth();
@@ -43,6 +44,7 @@ function AppRoutes() {
           <Route path="/dashboard/new" element={<ProtectedRoute><NewStudy /></ProtectedRoute>} />
           <Route path="/dashboard/processing" element={<ProtectedRoute><Processing /></ProtectedRoute>} />
           
+          <Route path="/study/:id/progress" element={<ProtectedRoute><Progress /></ProtectedRoute>} />
           <Route path="/study/:id/summary" element={<ProtectedRoute><StudySummary /></ProtectedRoute>} />
           <Route path="/study/:id/flashcards" element={<ProtectedRoute><Flashcards /></ProtectedRoute>} />
           <Route path="/study/:id/quiz" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />

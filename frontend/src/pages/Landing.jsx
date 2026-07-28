@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { BookOpen, Sparkles, Brain, ArrowRight } from 'lucide-react';
 import { Button } from '../components/Button';
 import { Card } from '../components/Card';
+import { Marquee } from '../components/Marquee';
 import { useAuth } from '../contexts/AuthContext';
 import { motion } from 'framer-motion';
 
@@ -28,8 +29,18 @@ export function Landing() {
     }
   };
 
+  const topMarqueeItems = [
+    "AI Powered Learning", "Flashcards", "Quizzes", "Smart Summaries", "PDF Upload", "AI Recommendations", "Study Analytics"
+  ];
+
+  const bottomMarqueeItems = [
+    "AI Flashcards", "AI Quizzes", "Study Library", "Review Mode", "Progress Tracking", "Interactive Learning", "AI Insights", "Personalized Revision"
+  ];
+
   return (
     <div className="flex flex-col w-full">
+      <Marquee items={topMarqueeItems} className="bg-[var(--color-lime)]" speed={50} direction="left" />
+
       {/* Hero Section */}
       <motion.section 
         className="flex flex-col items-center justify-center min-h-[70vh] px-6 py-20 text-center max-w-[1280px] mx-auto"
@@ -37,48 +48,48 @@ export function Landing() {
         animate="visible"
         variants={containerVariants}
       >
-        <motion.div variants={itemVariants} className="inline-flex items-center gap-2 bg-[var(--color-surface)] border border-[var(--color-charcoal)]/10 px-4 py-2 rounded-full mb-8 shadow-sm">
-          <Sparkles className="h-4 w-4 text-[var(--color-lime-hover)]" />
-          <span className="text-label-sm uppercase font-mono">AI-Powered Study Assistant</span>
-        </motion.div>
-        
-        <motion.h1 variants={itemVariants} className="text-display-lg font-display font-extrabold mb-8 tracking-tight leading-tight max-w-4xl mx-auto">
-          Master any topic <br className="hidden md:block" />
-          with <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-700 to-[var(--color-charcoal)]">intelligent</span> focus.
+        <motion.h1 variants={itemVariants} className="text-[53px] md:text-[93px] font-display font-extrabold mb-8 tracking-[-0.05em] leading-[0.95] max-w-5xl mx-auto text-balance text-[var(--color-charcoal)]">
+          Transform Notes into <br /> <span className="italic font-normal text-[var(--color-gray)]">Beautiful</span> Learning Experiences.
         </motion.h1>
         
-        <motion.p variants={itemVariants} className="text-body-lg text-[var(--color-gray)] mb-12 max-w-2xl font-body leading-relaxed mx-auto">
-          Transform raw notes into interactive flashcards, quizzes, and structured summaries in seconds. Stop organizing, start learning.
+        <motion.p variants={itemVariants} className="text-[26px] text-[var(--color-gray)] mb-12 max-w-2xl font-body leading-relaxed mx-auto">
+          Paste your raw study materials below. Our AI distills chaos into structured flashcards and quizzes, architected for deep retention and focus.
         </motion.p>
         
         <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
           <Link to={user ? "/dashboard" : "/signup"}>
-            <Button size="lg" className="w-full sm:w-auto">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-[#7B1E2B] text-white font-label font-bold text-[21px] uppercase tracking-wider px-8 py-4 rounded-full flex items-center justify-center hover:bg-[#8B1E3F] transition-colors shadow-[0_10px_30px_-10px_rgba(123,30,43,0.5)] hover:shadow-[0_20px_40px_-10px_rgba(123,30,43,0.6)] border-none"
+            >
               Get Started
               <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            </motion.div>
           </Link>
           {!user && (
             <Link to="/login">
-              <Button variant="secondary" size="lg" className="w-full sm:w-auto">
+              <Button variant="secondary" size="lg" className="w-full sm:w-auto h-[60px] px-8 rounded-full font-label tracking-wider uppercase border-[var(--color-charcoal)] text-[var(--color-charcoal)] hover:bg-[var(--color-charcoal)]/5 text-[21px]">
                 Log In
               </Button>
             </Link>
           )}
         </motion.div>
       </motion.section>
+      
+      <Marquee items={bottomMarqueeItems} className="bg-[var(--color-lime)]" speed={45} direction="right" />
 
       {/* Features Section */}
       <motion.section 
-        className="bg-[var(--color-surface)] py-[120px] px-6 border-t border-[var(--color-charcoal)]/5"
+        className="bg-transparent py-[120px] px-6 border-t border-[var(--color-charcoal)]/5"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={containerVariants}
       >
         <div className="max-w-[1280px] mx-auto">
-          <motion.h2 variants={itemVariants} className="text-headline-xl font-display font-bold text-center mb-16 max-w-3xl mx-auto">
-            The architect of your knowledge
+          <motion.h2 variants={itemVariants} className="text-[58px] font-display font-extrabold tracking-[-0.05em] leading-[0.95] text-[var(--color-charcoal)] text-center mb-16 max-w-3xl mx-auto">
+            The <span className="italic font-normal text-[var(--color-gray)]">architect</span> of your knowledge
           </motion.h2>
           
           <div className="grid md:grid-cols-3 gap-[24px]">

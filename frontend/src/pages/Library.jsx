@@ -59,12 +59,12 @@ export function Library() {
     >
       <motion.div variants={itemVariants} className="w-full flex flex-col md:flex-row justify-between md:items-end mb-[64px] gap-6">
         <div>
-          <h1 className="text-headline-xl font-display font-bold mb-4">Study Library</h1>
-          <p className="text-body-lg text-[var(--color-gray)]">All your generated knowledge in one place.</p>
+          <h1 className="text-[72px] font-display font-bold mb-4 leading-none tracking-tight">Study <span className="italic font-normal text-[#7B1E2B]">Library</span></h1>
+          <p className="text-body-lg text-[var(--color-gray)] mt-2">All your generated knowledge in one place.</p>
         </div>
         
         <Link to="/dashboard/new">
-          <Button className="w-full md:w-auto px-8">Start New Study</Button>
+          <Button className="w-full md:w-auto px-12 py-6 text-[28px] bg-[#ECF95A] text-black hover:bg-[#c3cf33] border-none">Start New Study</Button>
         </Link>
       </motion.div>
 
@@ -73,14 +73,14 @@ export function Library() {
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 text-[var(--color-gray)]" />
           <Input 
             placeholder="Search sessions..." 
-            className="pl-14 py-4 text-body-lg"
+            className="pl-14 py-4 text-body-lg border-2 border-[#7B1E2B]"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         
         <select 
-          className="rounded-[var(--radius-button)] bg-[#F4F4F2] px-8 py-4 text-body-lg text-[var(--color-charcoal)] border-none focus:outline-none focus:ring-2 focus:ring-[var(--color-lime)] cursor-pointer appearance-none font-medium"
+          className="rounded-[var(--radius-button)] bg-[#F4F4F2] px-8 py-4 text-body-lg text-[var(--color-charcoal)] border-2 border-[#7B1E2B] focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] cursor-pointer appearance-none font-medium"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
         >
@@ -114,13 +114,13 @@ export function Library() {
           <div className="grid gap-[24px]">
             {sortedSessions.map(session => (
               <motion.div key={session.id} variants={itemVariants}>
-                <Card className="p-[40px] flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-[var(--color-lime)] transition-colors shadow-sm relative group">
+                <Card className="p-[40px] flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-[#8B1E3F] transition-colors shadow-sm relative group border-2 border-[#7B1E2B]">
                   <div className="flex items-start gap-6 flex-grow">
                     <div className="bg-[#F4F4F2] p-4 rounded-[16px] hidden sm:block">
                       <Clock className="h-8 w-8 text-[var(--color-gray)]" />
                     </div>
                     <div>
-                      <h3 className="font-display font-bold text-headline-lg mb-3">{session.title || 'Untitled Session'}</h3>
+                      <h3 className="font-display font-bold text-[32px] text-black mb-3">{session.title || 'Untitled Session'}</h3>
                       <p className="text-body-lg text-[var(--color-charcoal-muted)] line-clamp-2 max-w-3xl mb-4 leading-relaxed">
                         {session.summary}
                       </p>
