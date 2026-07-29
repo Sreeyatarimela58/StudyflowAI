@@ -56,7 +56,8 @@ export function NewStudy() {
     navigate('/dashboard/processing', { 
       state: { 
         title: data.title || 'Untitled Study', 
-        content: data.content 
+        content: data.content,
+        quizMode: data.quizMode || 'Multiple Choice' 
       } 
     });
   };
@@ -89,7 +90,7 @@ export function NewStudy() {
       </motion.div>
 
       <motion.div variants={itemVariants} className="w-full max-w-4xl mx-auto">
-        <Card className="w-full p-[40px] md:p-[64px] border-4 border-black dark:border-[#333333] bg-white dark:bg-[#1A1A1A] shadow-none">
+        <Card className="w-full p-[40px] md:p-[64px] border-4 border-black dark:border-[#333333] bg-transparent dark:bg-[#1A1A1A] shadow-none">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-[32px]">
           
           <div>
@@ -138,6 +139,21 @@ export function NewStudy() {
               })}
               error={errors.content?.message}
             />
+          </div>
+
+          <div>
+            <label className="flex items-center text-headline-lg font-display font-bold mb-4 text-black dark:text-white" htmlFor="quizMode">
+              <Sparkles className="mr-3 h-6 w-6 text-black dark:text-white" />
+              Quiz Mode
+            </label>
+            <select 
+              id="quizMode"
+              {...register('quizMode')}
+              className="w-full rounded-[var(--radius-button)] bg-white dark:bg-[#1A1A1A] px-6 py-5 text-body-lg text-black dark:text-white border-2 border-black dark:border-[#333333] focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] cursor-pointer appearance-none font-medium"
+            >
+              <option value="Multiple Choice">Multiple Choice</option>
+              <option value="True/False">True/False</option>
+            </select>
           </div>
 
           <div className="flex justify-end pt-8 border-t border-[var(--color-charcoal)]/10 dark:border-[#333333]">

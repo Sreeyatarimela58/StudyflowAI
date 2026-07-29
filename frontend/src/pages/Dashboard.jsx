@@ -49,7 +49,7 @@ export function Dashboard() {
       <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 gap-[24px] w-full mb-[60px]">
         {/* Daily Review */}
         <motion.div variants={itemVariants} className="col-span-1">
-          <Card className="bg-white dark:bg-black border-4 border-black dark:border-[#333333] flex flex-col items-center justify-center p-[40px] min-h-[320px] text-center">
+          <Card className="bg-transparent dark:bg-black border-4 border-black dark:border-[#333333] flex flex-col items-center justify-center p-[40px] min-h-[320px] text-center">
             <Calendar className="h-16 w-16 text-black dark:text-white mb-6" />
             <h3 className="font-display font-bold text-[32px] text-black dark:text-white mb-3">Daily Review</h3>
             <p className="text-lg font-medium text-black/70 dark:text-white/70 mb-6">Focus on your weak concepts across sessions.</p>
@@ -63,7 +63,7 @@ export function Dashboard() {
 
         {/* Continue Preparation */}
         <motion.div variants={itemVariants} className="col-span-1">
-          <Card className="bg-white dark:bg-black border-4 border-black dark:border-[#333333] flex flex-col items-center justify-center p-[40px] min-h-[320px] text-center">
+          <Card className="bg-transparent dark:bg-black border-4 border-black dark:border-[#333333] flex flex-col items-center justify-center p-[40px] min-h-[320px] text-center">
             <PlayCircle className="h-16 w-16 text-black dark:text-white mb-6" />
             <h3 className="font-display font-bold text-[32px] text-black dark:text-white mb-3">Continue Session</h3>
             {latestSession ? (

@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Check, ArrowRight } from 'lucide-react';
+import { X, Check, ArrowRight, Clock } from 'lucide-react';
 import { useStudy } from '../contexts/StudyContext';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
@@ -12,14 +12,38 @@ export function Quiz() {
   const { id } = useParams();
   const { loadSession } = useStudy();
   const navigate = useNavigate();
+  const location = useLocation();
   
   const session = loadSession(id);
-  const quiz = session?.quiz || [];
+  const quiz = location.state?.questionsToRetake || session?.quiz || [];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [results, setResults] = useState([]);
+  const [startTime] = useState(() => Date.now());
+  const [timeLeft, setTimeLeft] = useState(30);
+
+  useEffect(() => {
+    if (isAnswered) return;
+
+    if (timeLeft === 0) {
+      // Time's up! Auto-submit as wrong
+      setIsAnswered(true);
+      setResults(prev => [...prev, {
+        question: quiz[currentIndex],
+        userAnswer: null, // No answer selected in time
+        isCorrect: false
+      }]);
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft(prev => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft, isAnswered, currentIndex, quiz]);
 
   if (!session || quiz.length === 0) {
     return (
@@ -54,9 +78,11 @@ export function Quiz() {
         setCurrentIndex(prev => prev + 1);
         setSelectedOption(null);
         setIsAnswered(false);
+        setTimeLeft(30);
       } else {
         // Finish Quiz
-        navigate(`/study/${id}/quiz/results`, { state: { results } });
+        const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+        navigate(`/study/${id}/quiz/results`, { state: { results, timeTaken } });
       }
     }
   };
@@ -68,8 +94,14 @@ export function Quiz() {
           <X className="mr-2 h-5 w-5" />
           Quit
         </Button>
-        <div className="text-label-sm font-bold font-mono tracking-wider text-[var(--color-gray)] dark:text-gray-400 uppercase">
-          Question {currentIndex + 1} of {quiz.length}
+        <div className="flex items-center gap-6">
+          <div className={`flex items-center gap-2 font-mono font-bold text-lg ${timeLeft <= 5 ? 'text-[var(--color-error)] animate-pulse' : 'text-black dark:text-white'}`}>
+            <Clock className="w-5 h-5" />
+            <span>00:{timeLeft.toString().padStart(2, '0')}</span>
+          </div>
+          <div className="text-label-sm font-bold font-mono tracking-wider text-[var(--color-gray)] dark:text-gray-400 uppercase">
+            Question {currentIndex + 1} of {quiz.length}
+          </div>
         </div>
       </div>
 
@@ -139,18 +171,14 @@ export function Quiz() {
         </motion.div>
       </AnimatePresence>
 
-      <div className="w-full max-w-4xl flex justify-end">
+      <div className="flex justify-end max-w-4xl w-full">
         <Button 
           onClick={handleSubmit} 
-          disabled={selectedOption === null}
-          size="lg"
-          className="w-full sm:w-auto px-12"
+          disabled={!isAnswered && selectedOption === null && timeLeft > 0} 
+          size="lg" 
+          className="w-full md:w-auto bg-black dark:bg-[#ECF95A] text-white dark:text-black font-bold uppercase tracking-widest px-10 border-2 border-black dark:border-[#ECF95A] hover:bg-gray-800 dark:hover:bg-[#c3cf33]"
         >
-          {isAnswered ? (
-            currentIndex < quiz.length - 1 ? 'Next Question' : 'View Results'
-          ) : (
-            'Submit Answer'
-          )}
+          {isAnswered ? (currentIndex < quiz.length - 1 ? 'Next Question' : 'Finish Quiz') : 'Submit Answer'}
           {isAnswered && <ArrowRight className="ml-2 h-5 w-5" />}
         </Button>
       </div>

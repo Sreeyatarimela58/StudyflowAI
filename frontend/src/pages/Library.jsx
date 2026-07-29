@@ -105,7 +105,7 @@ export function Library() {
           <div className="grid gap-[24px]">
             {sortedSessions.map(session => (
               <motion.div key={session.id} variants={itemVariants}>
-                <Card className="p-[40px] flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-[#8B1E3F] transition-colors shadow-sm relative group border-2 border-[#7B1E2B] dark:border-[#333333] bg-white dark:bg-[#1A1A1A]">
+                <Card className="p-[40px] flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-[#8B1E3F] transition-colors shadow-sm relative group border-2 border-[#7B1E2B] dark:border-[#333333] bg-transparent dark:bg-[#1A1A1A]">
                   <div className="flex items-start gap-6 flex-grow">
                     <div className="bg-[#F4F4F2] dark:bg-black p-4 rounded-[16px] hidden sm:block">
                       <Clock className="h-8 w-8 text-[var(--color-gray)] dark:text-gray-400" />

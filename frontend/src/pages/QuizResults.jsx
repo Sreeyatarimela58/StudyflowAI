@@ -13,6 +13,7 @@ export function QuizResults() {
   const navigate = useNavigate();
   
   const results = location.state?.results || [];
+  const timeTaken = location.state?.timeTaken || 0;
   
   if (results.length === 0) {
     return (
@@ -30,7 +31,7 @@ export function QuizResults() {
 
   useEffect(() => {
     if (results.length > 0 && id) {
-      saveQuizResult(id, { total, correct, incorrect, score, details: results });
+      saveQuizResult(id, { total, correct, incorrect, score, timeTaken, details: results });
     }
   }, [id, results.length]); // Save only once on mount when results are present
 

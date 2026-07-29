@@ -32,7 +32,7 @@ export function Processing() {
       await new Promise(r => setTimeout(r, 1500));
       setStatus('generating');
 
-      const result = await generateStudyMaterial(requestData.title, requestData.content);
+      const result = await generateStudyMaterial(requestData.title, requestData.content, requestData.quizMode);
       
       setStatus('formatting');
       await new Promise(r => setTimeout(r, 1000));
@@ -42,7 +42,8 @@ export function Processing() {
       const newSession = {
         ...result,
         id: crypto.randomUUID(),
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        quizMode: requestData.quizMode || 'Multiple Choice'
       };
 
       saveSession(newSession);

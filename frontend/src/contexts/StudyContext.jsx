@@ -45,7 +45,8 @@ export function StudyProvider({ children }) {
     }
   };
 
-  const saveQuizResult = (sessionId, result) => {
+  const saveQuizResult = async (sessionId, result) => {
+    // Save results immediately
     setSessions(prev => {
       const exists = prev.findIndex(s => s.id === sessionId);
       if (exists < 0) return prev;
@@ -58,6 +59,42 @@ export function StudyProvider({ children }) {
       localStorage.setItem('studyflow_sessions', JSON.stringify(updated));
       return updated;
     });
+
+    // Fetch dynamic AI analysis asynchronously
+    try {
+      const currentSessions = JSON.parse(localStorage.getItem('studyflow_sessions') || '[]');
+      const session = currentSessions.find(s => s.id === sessionId);
+      
+      if (session) {
+        const response = await fetch('http://localhost:3001/api/analyze-quiz', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionTitle: session.title,
+            sessionSummary: session.summary,
+            quizResults: result
+          })
+        });
+        
+        const analysis = await response.json();
+        
+        setSessions(prev => {
+          const exists = prev.findIndex(s => s.id === sessionId);
+          if (exists < 0) return prev;
+          
+          const updated = [...prev];
+          updated[exists] = {
+            ...updated[exists],
+            aiAnalysis: analysis,
+            aiRecommendations: analysis.aiRecommendations // keep existing compatibility
+          };
+          localStorage.setItem('studyflow_sessions', JSON.stringify(updated));
+          return updated;
+        });
+      }
+    } catch (error) {
+      console.error('Failed to fetch dynamic AI analysis:', error);
+    }
   };
 
   return (

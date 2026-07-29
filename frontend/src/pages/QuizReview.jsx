@@ -74,7 +74,7 @@ export function QuizReview() {
             <motion.article 
               key={index} 
               variants={itemVariants}
-              className="bg-[#ECF95A] dark:bg-[#1A1A1A] rounded-[32px] p-6 md:p-[40px] border border-[var(--color-primary)]/5 dark:border-[#333333] border-4 dark:border-4 dark:border-[#333333] shadow-none relative overflow-hidden group"
+              className="bg-white dark:bg-[#1A1A1A] rounded-[32px] p-6 md:p-[40px] border border-[var(--color-primary)]/5 dark:border-[#333333] border-4 dark:border-4 dark:border-[#333333] shadow-none relative overflow-hidden group"
             >
               {/* Subtle background accent */}
               <div className="absolute top-0 left-0 w-2 h-full bg-[var(--color-error)]/20 dark:bg-red-900/40"></div>
@@ -93,7 +93,7 @@ export function QuizReview() {
               <div className={`grid grid-cols-1 ${isMultipleChoice ? 'lg:grid-cols-2' : ''} gap-6 lg:gap-[24px] mb-10`}>
                 
                 {/* Wrong Answer */}
-                <div className="bg-[#F4F4F2] dark:bg-[#222] border border-[var(--color-error)]/20 dark:border-red-900/40 rounded-2xl p-6 flex gap-4">
+                <div className="bg-[var(--color-sage)] dark:bg-[#222] border border-[var(--color-error)]/20 dark:border-red-900/40 rounded-2xl p-6 flex gap-4">
                   <XCircle className="w-6 h-6 text-[var(--color-error)] dark:text-[#ff8989] mt-0.5 shrink-0" />
                   <div>
                     <p className="font-label text-[12px] font-bold text-[var(--color-error)] dark:text-[#ff8989] uppercase mb-3 tracking-wider">Your Answer</p>
@@ -110,7 +110,7 @@ export function QuizReview() {
                 </div>
 
                 {/* Correct Answer */}
-                <div className="bg-[#F4F4F2] dark:bg-[#222] border border-[var(--color-secondary)]/20 dark:border-[#ECF95A]/20 rounded-2xl p-6 flex gap-4">
+                <div className="bg-[var(--color-sage)] dark:bg-[#222] border border-[var(--color-secondary)]/20 dark:border-[#ECF95A]/20 rounded-2xl p-6 flex gap-4">
                   <CheckCircle2 className="w-6 h-6 text-[#626655] dark:text-[#ECF95A] mt-0.5 shrink-0" />
                   <div>
                     <p className="font-label text-[12px] font-bold text-[#626655] dark:text-[#ECF95A] uppercase mb-3 tracking-wider">Correct Answer</p>
@@ -128,11 +128,11 @@ export function QuizReview() {
               {/* Action Row */}
               <div className="flex justify-end pt-8 border-t border-[var(--color-charcoal)]/10 dark:border-[#333333]">
                 <button 
-                  onClick={() => navigate(`/study/${id}/quiz`)}
+                  onClick={() => navigate(`/study/${id}/quiz`, { state: { questionsToRetake: [q] } })}
                   className="inline-flex items-center gap-3 border border-black dark:border-[#ECF95A] text-black dark:text-[#ECF95A] px-8 py-4 rounded-full hover:bg-[var(--color-surface-hover)] dark:hover:bg-[#333333] transition-colors duration-200 font-bold"
                 >
                   <RefreshCw className="w-5 h-5" />
-                  <span className="font-label text-[12px] font-bold uppercase tracking-widest">Retake Quiz</span>
+                  <span className="font-label text-[12px] font-bold uppercase tracking-widest">Retake Question</span>
                 </button>
               </div>
             </motion.article>
@@ -141,10 +141,17 @@ export function QuizReview() {
       </div>
 
       {/* Completion Action */}
-      <motion.div variants={itemVariants} className="flex justify-center mt-12 md:mt-20">
+      <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center mt-12 md:mt-20 gap-4">
         <button 
-          onClick={() => navigate(`/study/${id}/progress`)}
-          className="inline-flex items-center gap-3 bg-[var(--color-tertiary-fixed)] text-[var(--color-on-tertiary-fixed)] px-10 py-5 rounded-full hover:scale-105 transition-transform duration-200"
+          onClick={() => navigate(`/study/${id}/quiz`, { state: { questionsToRetake: incorrectResults.map(r => r.question) } })}
+          className="inline-flex items-center justify-center gap-3 bg-[#7B1E2B] text-white border-2 border-black dark:border-[#333333] px-10 py-5 rounded-full hover:bg-[#8B1E3F] transition-colors duration-200"
+        >
+          <RefreshCw className="w-5 h-5" />
+          <span className="font-label text-[14px] uppercase font-bold tracking-widest">Retake Incorrect Questions</span>
+        </button>
+        <button 
+          onClick={() => navigate(`/dashboard`)}
+          className="inline-flex items-center justify-center gap-3 bg-[#ECF95A] text-black border-2 border-black dark:border-[#333333] px-10 py-5 rounded-full hover:bg-[#c3cf33] transition-colors duration-200"
         >
           <span className="font-label text-[14px] uppercase font-bold tracking-widest">Return to Dashboard</span>
           <ArrowRight className="w-5 h-5" />

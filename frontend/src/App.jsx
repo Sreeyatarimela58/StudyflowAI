@@ -19,7 +19,6 @@ import { QuizResults } from './pages/QuizResults';
 import { QuizReview } from './pages/QuizReview';
 import { Library } from './pages/Library';
 import { Profile } from './pages/Profile';
-import { Progress } from './pages/Progress';
 import { DailyReview } from './pages/DailyReview';
 
 const ProtectedRoute = ({ children }) => {
@@ -48,7 +47,6 @@ function AppRoutes() {
           
           <Route path="/daily-review" element={<ProtectedRoute><DailyReview /></ProtectedRoute>} />
           
-          <Route path="/study/:id/progress" element={<ProtectedRoute><Progress /></ProtectedRoute>} />
           <Route path="/study/:id/summary" element={<ProtectedRoute><StudySummary /></ProtectedRoute>} />
           <Route path="/study/:id/flashcards" element={<ProtectedRoute><Flashcards /></ProtectedRoute>} />
           <Route path="/study/:id/quiz" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />

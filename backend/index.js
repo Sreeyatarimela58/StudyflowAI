@@ -15,7 +15,8 @@ const groq = process.env.GROQ_API_KEY ? new Groq({ apiKey: process.env.GROQ_API_
 
 app.post('/api/generate', async (req, res) => {
   try {
-    const { title, content } = req.body;
+    const { title, content, quizMode } = req.body;
+    const mode = quizMode || 'Multiple Choice';
     
     if (!content || content.length < 20) {
       return res.status(400).json({ error: 'Content is too short or missing' });
@@ -36,8 +37,8 @@ app.post('/api/generate', async (req, res) => {
         ],
         quiz: [
           {
-            question: 'What is the mock concept?',
-            options: ['Option A', 'Option B', 'Option C', 'Option D'],
+            question: mode === 'True/False' ? 'This is a mock true/false statement.' : mode === 'Fill in the Blanks' ? 'This is a mock ____ question.' : 'What is the mock concept?',
+            options: mode === 'True/False' ? ['True', 'False'] : ['Option A', 'Option B', 'Option C', 'Option D'],
             correctIndex: 1,
             explanation: 'Option B is correct because this is a mock.'
           }
@@ -88,6 +89,27 @@ app.post('/api/generate', async (req, res) => {
       },
       required: ["title", "summary", "recommendations", "flashcards", "quiz"]
     };
+
+    let quizRules = '';
+    if (mode === 'True/False') {
+      quizRules = `Rules:
+• Exactly two options: ["True", "False"].
+• correctIndex must be 0 or 1.
+• Questions must be statements that are unambiguously true or false.`;
+    } else if (mode === 'Fill in the Blanks') {
+      quizRules = `Rules:
+• The question must be a sentence containing a blank represented by "____".
+• Exactly four options to fill the blank.
+• correctIndex must be an integer (0, 1, 2, or 3) representing the correct option.
+• Incorrect answers must be believable.`;
+    } else {
+      quizRules = `Rules:
+• Exactly four options.
+• correctIndex must be an integer (0, 1, 2, or 3) representing the index of the correct option.
+• Only one correct answer.
+• Incorrect answers must be believable.
+• Include easy, medium and difficult questions.`;
+    }
 
     const prompt = `You are StudyFlow AI, an expert educational assistant.
 Your purpose is to transform study material into structured learning resources.
@@ -148,9 +170,10 @@ Each flashcard must contain:
 Questions should test understanding. Avoid yes/no questions.
 
 ------------------------------------------
-QUIZ
 ------------------------------------------
-The number of multiple-choice questions should depend on BOTH:
+QUIZ (${mode})
+------------------------------------------
+The number of ${mode} questions should depend on BOTH:
 1. The length of the document.
 2. The number of unique concepts, topics, people, or events.
 Never force extra quiz questions simply to reach a target number. Generate only enough high-quality study material to comprehensively cover the content.
@@ -161,12 +184,7 @@ Each question must follow this format:
   "correctIndex": 0,
   "explanation": "..."
 }
-Rules:
-• Exactly four options.
-• correctIndex must be an integer (0, 1, 2, or 3) representing the index of the correct option.
-• Only one correct answer.
-• Incorrect answers must be believable.
-• Include easy, medium and difficult questions.
+${quizRules}
 
 ------------------------------------------
 RECOMMENDATIONS
@@ -218,6 +236,82 @@ ${title ? `Title: ${title}\n` : ''}${content}`;
           explanation: 'The LLM provider returned a 429 Resource Exhausted error, indicating the API key has hit its quota limits.'
         }
       ]
+    });
+  }
+});
+
+app.post('/api/analyze-quiz', async (req, res) => {
+  try {
+    const { sessionTitle, sessionSummary, quizResults } = req.body;
+    
+    if (!quizResults || quizResults.total === undefined) {
+      return res.status(400).json({ error: 'Quiz results are missing' });
+    }
+
+    if (!groq) {
+      console.log('No GROQ_API_KEY provided. Using mock analysis.');
+      await new Promise(r => setTimeout(r, 1000));
+      return res.json({
+        strongAreas: ['Mock Strong Area 1: Fundamentals', 'Mock Strong Area 2: Definitions'],
+        areasToFocus: ['Mock Weak Area 1: Advanced concepts', 'Mock Weak Area 2: Applications'],
+        aiRecommendations: 'This is a mock recommendation because the API key is missing. Based on your mock results, review your mock weak areas carefully before retaking the quiz.'
+      });
+    }
+
+    const schema = {
+      type: "object",
+      properties: {
+        strongAreas: { type: "array", items: { type: "string" } },
+        areasToFocus: { type: "array", items: { type: "string" } },
+        aiRecommendations: { type: "string" }
+      },
+      required: ["strongAreas", "areasToFocus", "aiRecommendations"]
+    };
+
+    const prompt = `You are StudyFlow AI, an expert educational assistant.
+Analyze the student's quiz performance and provide personalized feedback.
+
+Context:
+Session Title: ${sessionTitle}
+Session Summary: ${sessionSummary}
+
+Quiz Results:
+Total Questions: ${quizResults.total}
+Correct: ${quizResults.correct}
+Incorrect: ${quizResults.incorrect}
+Score: ${quizResults.score}%
+
+Details of performance:
+${(quizResults.details || []).map((r, i) => `Q${i+1}: ${r.question.question}\nCorrect Answer: ${r.question.options ? r.question.options[r.question.correctIndex] : r.question.correctAnswer}\nStudent Answer: ${r.userAnswer !== null ? (r.question.options ? r.question.options[r.userAnswer] : r.userAnswer) : 'Skipped'}\nStatus: ${r.isCorrect ? 'Correct' : 'Incorrect'}`).join('\n\n')}
+
+Based on this performance, generate:
+1. "strongAreas": 2-3 short bullet points (max 5 words each) of topics the student understands well.
+2. "areasToFocus": 2-3 short bullet points (max 5 words each) of topics the student needs to review.
+3. "aiRecommendations": A short paragraph (2-3 sentences) with actionable advice for their next study steps. Do not use markdown, just plain text.
+
+Respond ONLY with a valid JSON object matching this structure:
+{
+  "strongAreas": ["...", "..."],
+  "areasToFocus": ["...", "..."],
+  "aiRecommendations": "..."
+}`;
+
+    const response = await groq.chat.completions.create({
+      model: 'llama-3.1-8b-instant',
+      messages: [{ role: 'user', content: prompt }],
+      response_format: { type: 'json_object' }
+    });
+
+    const resultText = response.choices[0].message.content;
+    const resultJson = JSON.parse(resultText);
+
+    res.json(resultJson);
+  } catch (error) {
+    console.error('Quiz Analysis Error:', error.message || error);
+    return res.json({
+      strongAreas: ['General Concepts (Fallback)'],
+      areasToFocus: ['Detailed Applications (Fallback)'],
+      aiRecommendations: 'There was an error generating AI recommendations. Please review the questions you missed manually.'
     });
   }
 });
