@@ -1,11 +1,14 @@
+import { useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Target, CheckCircle2, XCircle, Clock, ArrowRight, RotateCcw } from 'lucide-react';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
+import { useStudy } from '../contexts/StudyContext';
 import { motion } from 'framer-motion';
 
 export function QuizResults() {
   const { id } = useParams();
+  const { saveQuizResult } = useStudy();
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -24,6 +27,12 @@ export function QuizResults() {
   const correct = results.filter(r => r.isCorrect).length;
   const incorrect = total - correct;
   const score = Math.round((correct / total) * 100);
+
+  useEffect(() => {
+    if (results.length > 0 && id) {
+      saveQuizResult(id, { total, correct, incorrect, score, details: results });
+    }
+  }, [id, results.length]); // Save only once on mount when results are present
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -108,7 +117,7 @@ export function QuizResults() {
           className="w-full sm:flex-1 bg-[#ECF95A] text-black hover:bg-[#c3cf33] border-2 border-black"
           onClick={() => navigate(`/study/${id}/summary`)}
         >
-          Continue to Summary
+          See Detailed Analysis
           <ArrowRight className="ml-3 h-5 w-5" />
         </Button>
       </motion.div>

@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#ECF95A',
     padding: 40,
     fontFamily: 'Helvetica'
   },
@@ -12,14 +12,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 20,
     fontWeight: 'bold',
-    color: '#191314'
+    color: '#000000'
   },
   sectionTitle: {
     fontSize: 16,
     marginTop: 20,
     marginBottom: 10,
     fontWeight: 'bold',
-    color: '#191314'
+    color: '#000000',
+    borderBottomWidth: 2,
+    borderBottomColor: '#7B1E2B',
+    paddingBottom: 4
   },
   text: {
     fontSize: 12,

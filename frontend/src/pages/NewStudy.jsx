@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { Sparkles, FileText, ArrowRight } from 'lucide-react';
+import { Sparkles, FileText, ArrowRight, Upload } from 'lucide-react';
+import * as pdfjsLib from 'pdfjs-dist';
+import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { Textarea } from '../components/Textarea';
@@ -10,9 +14,38 @@ import { useStudy } from '../contexts/StudyContext';
 import { motion } from 'framer-motion';
 
 export function NewStudy() {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.type !== 'application/pdf') {
+      alert('Please upload a valid PDF file.');
+      return;
+    }
+
+    setIsUploading(true);
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      let fullText = '';
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const textContent = await page.getTextContent();
+        const pageText = textContent.items.map(item => item.str).join(' ');
+        fullText += pageText + '\n\n';
+      }
+      setValue('content', fullText, { shouldValidate: true });
+    } catch (err) {
+      console.error('Error parsing PDF:', err);
+      alert('Failed to parse PDF document.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const onSubmit = (data) => {
     setIsSubmitting(true);
@@ -77,9 +110,24 @@ export function NewStudy() {
               <Sparkles className="mr-3 h-6 w-6 text-[var(--color-lime-hover)]" />
               Study Material
             </label>
-            <p className="text-[var(--color-gray)] mb-6 text-body-md">
-              Paste your raw notes, definitions, or an entire article here. Minimum 50 characters for best results.
-            </p>
+            <div className="flex justify-between items-end mb-6">
+              <p className="text-[var(--color-gray)] text-body-md max-w-2xl">
+                Paste your raw notes, definitions, or an entire article here. Minimum 50 characters for best results.
+              </p>
+              <div className="relative">
+                <input 
+                  type="file" 
+                  accept="application/pdf" 
+                  onChange={handleFileUpload}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  disabled={isUploading}
+                />
+                <Button type="button" variant="secondary" className="pointer-events-none" isLoading={isUploading}>
+                  <Upload className="w-4 h-4 mr-2" />
+                  Upload PDF
+                </Button>
+              </div>
+            </div>
             <Textarea 
               id="content" 
               placeholder="Paste your notes here..."

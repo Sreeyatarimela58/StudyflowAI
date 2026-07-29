@@ -105,6 +105,33 @@ export function StudySummary() {
               </ul>
             </Card>
           </motion.div>
+
+          {session.quizResults && (
+            <motion.div variants={itemVariants}>
+              <Card className="p-[40px] md:p-[64px] bg-white border-2 border-[#c3cf33] shadow-none text-[var(--color-charcoal)]">
+                <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black">
+                  <Brain className="mr-4 h-8 w-8 text-[#c3cf33]" />
+                  Detailed Analysis
+                </h2>
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="bg-green-50 p-6 rounded-2xl border-2 border-green-200">
+                    <h3 className="text-xl font-bold text-green-800 mb-4">Strong Areas</h3>
+                    <ul className="list-disc list-inside text-green-700 space-y-2">
+                      <li>Understanding core concepts</li>
+                      <li>Basic terminology</li>
+                    </ul>
+                  </div>
+                  <div className="bg-red-50 p-6 rounded-2xl border-2 border-red-200">
+                    <h3 className="text-xl font-bold text-red-800 mb-4">Areas to Focus</h3>
+                    <ul className="list-disc list-inside text-red-700 space-y-2">
+                      <li>Advanced application</li>
+                      <li>Specific edge cases</li>
+                    </ul>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+          )}
         </div>
 
         <div className="space-y-[32px]">
@@ -126,19 +153,39 @@ export function StudySummary() {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <Card className="p-[40px] flex flex-col h-full min-h-[300px] border-2 border-[#c3cf33]">
+            <Card className="p-[40px] flex flex-col h-full min-h-[300px] border-2 border-[#c3cf33] relative">
               <div className="bg-[#c3cf33]/20 p-4 rounded-[16px] w-fit mb-6">
                 <Brain className="h-8 w-8 text-black" />
               </div>
               <h3 className="text-headline-lg font-display font-bold mb-3 text-black">Knowledge Quiz</h3>
-              <p className="text-body-lg text-[var(--color-gray)] mb-8">
-                {session.quiz?.length || 0} questions to test your adaptive retention.
-              </p>
-              <Link to={`/study/${id}/quiz`} className="mt-auto">
-                <Button className="w-full bg-[#ECF95A] text-black hover:bg-[#c3cf33] border-none">
-                  Start Quiz
-                </Button>
-              </Link>
+              
+              {session.quizResults ? (
+                <>
+                  <div className="absolute top-8 right-8 bg-[#ECF95A] text-black px-3 py-1 rounded-full text-xs font-bold border-2 border-black">
+                    ATTEMPTED
+                  </div>
+                  <div className="flex items-end gap-2 mb-8">
+                    <span className="text-5xl font-display font-bold text-[#7B1E2B]">{session.quizResults.score}%</span>
+                    <span className="text-body-md text-gray-500 font-bold mb-2 uppercase">Score</span>
+                  </div>
+                  <Link to={`/study/${id}/quiz`} className="mt-auto">
+                    <Button className="w-full bg-[#7B1E2B] text-white hover:bg-[#8B1E3F] border-none">
+                      Re-attempt Quiz
+                    </Button>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <p className="text-body-lg text-[var(--color-gray)] mb-8">
+                    {session.quiz?.length || 0} questions to test your adaptive retention.
+                  </p>
+                  <Link to={`/study/${id}/quiz`} className="mt-auto">
+                    <Button className="w-full bg-[#ECF95A] text-black hover:bg-[#c3cf33] border-none">
+                      Start Quiz
+                    </Button>
+                  </Link>
+                </>
+              )}
             </Card>
           </motion.div>
         </div>

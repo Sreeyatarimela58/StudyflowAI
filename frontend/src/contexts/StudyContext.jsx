@@ -45,6 +45,21 @@ export function StudyProvider({ children }) {
     }
   };
 
+  const saveQuizResult = (sessionId, result) => {
+    setSessions(prev => {
+      const exists = prev.findIndex(s => s.id === sessionId);
+      if (exists < 0) return prev;
+      
+      const updated = [...prev];
+      updated[exists] = {
+        ...updated[exists],
+        quizResults: result
+      };
+      localStorage.setItem('studyflow_sessions', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   return (
     <StudyContext.Provider value={{ 
       sessions, 
@@ -52,7 +67,8 @@ export function StudyProvider({ children }) {
       setActiveSession,
       saveSession, 
       loadSession, 
-      deleteSession 
+      deleteSession,
+      saveQuizResult
     }}>
       {children}
     </StudyContext.Provider>
