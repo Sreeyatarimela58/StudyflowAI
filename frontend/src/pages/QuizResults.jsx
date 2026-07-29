@@ -55,13 +55,13 @@ export function QuizResults() {
       variants={containerVariants}
     >
       <motion.div variants={itemVariants} className="w-full text-center mb-[80px]">
-        <h1 className="text-headline-xl font-display font-bold mb-4">Quiz Complete!</h1>
-        <p className="text-body-lg text-[var(--color-gray)]">Here's how you performed.</p>
+        <h1 className="text-headline-xl font-display font-bold mb-4 text-black dark:text-white">Quiz Complete!</h1>
+        <p className="text-body-lg text-[var(--color-gray)] dark:text-gray-400">Here's how you performed.</p>
       </motion.div>
 
       <motion.div variants={containerVariants} className="grid md:grid-cols-3 gap-[24px] w-full max-w-4xl mb-[80px]">
         <motion.div variants={itemVariants} className="col-span-full md:col-span-1">
-          <Card className="p-[40px] flex flex-col items-center justify-center text-center bg-white text-black border-4 border-black h-full min-h-[400px]">
+          <Card className="p-[40px] flex flex-col items-center justify-center text-center bg-white dark:bg-[#1A1A1A] text-black dark:text-white border-4 border-black dark:border-[#333333] h-full min-h-[400px] shadow-none">
             <div className="relative mb-6">
               <svg className="w-32 h-32 transform -rotate-90">
                 <circle cx="64" cy="64" r="56" fill="transparent" stroke="currentColor" strokeWidth="12" className="opacity-20" />
@@ -74,28 +74,28 @@ export function QuizResults() {
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-headline-lg font-display font-bold text-black">{score}%</span>
+                <span className="text-headline-lg font-display font-bold text-black dark:text-white">{score}%</span>
               </div>
             </div>
-            <h3 className="text-body-md font-bold uppercase tracking-widest text-black opacity-80">Accuracy</h3>
+            <h3 className="text-body-md font-bold uppercase tracking-widest text-black dark:text-gray-400 opacity-80">Accuracy</h3>
           </Card>
         </motion.div>
 
         <motion.div variants={itemVariants} className="col-span-full md:col-span-2 grid grid-cols-2 gap-[24px]">
-          <Card className="p-[40px] flex flex-col items-center justify-center text-center h-full min-h-[400px] bg-white border-4 border-black">
+          <Card className="p-[40px] flex flex-col items-center justify-center text-center h-full min-h-[400px] bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-[#333333] shadow-none">
             <div className="bg-green-100 p-4 rounded-[16px] mb-6">
               <CheckCircle2 className="h-8 w-8 text-green-600" />
             </div>
-            <span className="text-headline-xl font-display font-bold mb-3 text-black">{correct}</span>
-            <span className="text-label-sm font-bold uppercase tracking-widest text-black/60">Correct</span>
+            <span className="text-headline-xl font-display font-bold mb-3 text-black dark:text-white">{correct}</span>
+            <span className="text-label-sm font-bold uppercase tracking-widest text-black/60 dark:text-gray-400">Correct</span>
           </Card>
           
-          <Card className="p-[40px] flex flex-col items-center justify-center text-center h-full min-h-[400px] bg-white border-4 border-black">
+          <Card className="p-[40px] flex flex-col items-center justify-center text-center h-full min-h-[400px] bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-[#333333] shadow-none">
             <div className="bg-red-100 p-4 rounded-[16px] mb-6">
               <XCircle className="h-8 w-8 text-red-600" />
             </div>
-            <span className="text-headline-xl font-display font-bold mb-3 text-black">{incorrect}</span>
-            <span className="text-label-sm font-bold uppercase tracking-widest text-black/60">Incorrect</span>
+            <span className="text-headline-xl font-display font-bold mb-3 text-black dark:text-white">{incorrect}</span>
+            <span className="text-label-sm font-bold uppercase tracking-widest text-black/60 dark:text-gray-400">Incorrect</span>
           </Card>
         </motion.div>
       </motion.div>

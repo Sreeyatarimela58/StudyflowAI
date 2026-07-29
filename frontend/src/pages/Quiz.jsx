@@ -64,11 +64,11 @@ export function Quiz() {
   return (
     <div className="flex flex-col items-center min-h-[calc(100svh-100px)] w-full max-w-[1280px] mx-auto px-6 py-[40px]">
       <div className="w-full flex items-center justify-between mb-8 max-w-4xl">
-        <Button variant="ghost" size="sm" onClick={() => navigate(`/study/${id}/summary`)} className="px-4">
+        <Button variant="ghost" size="sm" onClick={() => navigate(`/study/${id}/summary`)} className="px-4 text-black dark:text-white">
           <X className="mr-2 h-5 w-5" />
           Quit
         </Button>
-        <div className="text-label-sm font-bold font-mono tracking-wider text-[var(--color-gray)] uppercase">
+        <div className="text-label-sm font-bold font-mono tracking-wider text-[var(--color-gray)] dark:text-gray-400 uppercase">
           Question {currentIndex + 1} of {quiz.length}
         </div>
       </div>
@@ -84,8 +84,8 @@ export function Quiz() {
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="w-full max-w-4xl"
         >
-          <Card className="w-full p-[40px] md:p-[64px] shadow-[var(--shadow-premium)] mb-10 border-4 border-[#ECF95A]">
-            <h2 className="text-headline-lg md:text-headline-xl font-display font-semibold mb-10 leading-snug">
+          <Card className="w-full p-[40px] md:p-[64px] shadow-[var(--shadow-premium)] mb-10 border-4 border-[#ECF95A] bg-white dark:bg-[#1A1A1A]">
+            <h2 className="text-headline-lg md:text-headline-xl font-display font-semibold mb-10 leading-snug text-black dark:text-white">
               {currentQuestion.question}
             </h2>
 
@@ -113,7 +113,7 @@ export function Quiz() {
                     disabled={isAnswered}
                     className={`w-full text-left p-[24px] rounded-[16px] border-[2px] transition-all duration-300 flex items-center justify-between ${optionStyle}`}
                   >
-                    <span className="text-body-lg font-medium">{option}</span>
+                    <span className="text-body-lg font-medium dark:text-white">{option}</span>
                     {isAnswered && idx === currentQuestion.correctIndex && (
                       <Check className="h-6 w-6 text-green-600" />
                     )}
@@ -127,10 +127,10 @@ export function Quiz() {
                 initial={{ opacity: 0, y: 10 }} 
                 animate={{ opacity: 1, y: 0 }} 
                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-10 p-[32px] bg-[#F4F4F2] rounded-[16px] border border-[var(--color-charcoal)]/5"
+                className="mt-10 p-[32px] bg-[#F4F4F2] dark:bg-black rounded-[16px] border border-[var(--color-charcoal)]/5 dark:border-[#333333]"
               >
-                <h4 className="font-bold text-label-sm uppercase tracking-widest text-[var(--color-gray)] mb-3">Explanation</h4>
-                <p className="text-body-lg text-[var(--color-gray)] leading-relaxed">
+                <h4 className="font-bold text-label-sm uppercase tracking-widest text-[var(--color-gray)] dark:text-gray-400 mb-3">Explanation</h4>
+                <p className="text-body-lg text-[var(--color-gray)] dark:text-gray-300 leading-relaxed">
                   {currentQuestion.explanation}
                 </p>
               </motion.div>

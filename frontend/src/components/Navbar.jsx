@@ -1,15 +1,17 @@
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, User } from 'lucide-react';
+import { BookOpen, User, Moon, Sun } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 export function Navbar() {
   const { user } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
 
   const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
   return (
-    <header className="w-full top-0 sticky z-50 transition-colors duration-300 shadow-sm bg-[#e69532]">
+    <header className="w-full top-0 sticky z-50 transition-colors duration-300 shadow-sm bg-[#e69532] dark:bg-[#0a0a0a] dark:border-b dark:border-[#333333]">
       <div className="flex justify-between items-center px-[20px] md:px-[40px] py-8 w-full">
         
         {/* Logo */}
@@ -39,12 +41,17 @@ export function Navbar() {
 
         {/* Profile / Auth Actions */}
         {!isAuthPage && (
-          <div className="flex items-center">
+          <div className="flex items-center gap-6">
+            <button 
+              onClick={toggleTheme} 
+              className="p-3 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors text-black dark:text-white"
+            >
+              {theme === 'dark' ? <Sun className="h-7 w-7" /> : <Moon className="h-7 w-7" />}
+            </button>
             {user ? (
               <Link 
                 to="/profile"
-                className="font-label text-[24px] flex items-center gap-4 text-[var(--color-primary-fixed)] font-bold hover:opacity-80 transition-opacity duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--color-tertiary-fixed)] rounded-full pl-4 pr-2 py-2"
-                style={{ color: '#000000' }}
+                className="font-label text-[24px] flex items-center gap-4 text-black dark:text-white font-bold hover:opacity-80 transition-opacity duration-200 focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] rounded-full pl-4 pr-2 py-2"
               >
                 Profile
                 <motion.div 

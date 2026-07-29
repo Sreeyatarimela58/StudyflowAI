@@ -48,8 +48,8 @@ export function Landing() {
         animate="visible"
         variants={containerVariants}
       >
-        <motion.h1 variants={itemVariants} className="text-[53px] md:text-[93px] font-display font-extrabold mb-8 tracking-[-0.05em] leading-[0.95] max-w-5xl mx-auto text-balance text-[var(--color-charcoal)]">
-          Transform Notes into <br /> <span className="italic font-normal text-[var(--color-gray)]">Beautiful</span> Learning Experiences.
+        <motion.h1 variants={itemVariants} className="text-[53px] md:text-[93px] font-display font-extrabold mb-8 tracking-[-0.05em] leading-[0.95] max-w-5xl mx-auto text-balance text-[var(--color-charcoal)] dark:text-white">
+          Transform Notes into <br /> <span className="italic font-normal text-[var(--color-gray)] dark:text-gray-300">Beautiful</span> Learning Experiences.
         </motion.h1>
         
         <motion.p variants={itemVariants} className="text-[26px] text-[var(--color-gray)] mb-12 max-w-2xl font-body leading-relaxed mx-auto">
@@ -88,42 +88,42 @@ export function Landing() {
         variants={containerVariants}
       >
         <div className="max-w-[1280px] mx-auto">
-          <motion.h2 variants={itemVariants} className="text-[58px] font-display font-extrabold tracking-[-0.05em] leading-[0.95] text-[var(--color-charcoal)] text-center mb-16 max-w-3xl mx-auto">
-            The <span className="italic font-normal text-[var(--color-gray)]">architect</span> of your knowledge
+          <motion.h2 variants={itemVariants} className="text-[58px] font-display font-extrabold tracking-[-0.05em] leading-[0.95] text-[var(--color-charcoal)] dark:text-white text-center mb-16 max-w-3xl mx-auto">
+            The <span className="italic font-normal text-[var(--color-gray)] dark:text-gray-400">architect</span> of your knowledge
           </motion.h2>
           
           <div className="grid md:grid-cols-3 gap-[24px]">
             <motion.div variants={itemVariants}>
-              <Card className="flex flex-col items-start p-[40px] h-full shadow-[var(--shadow-premium)]">
-                <div className="bg-[#F4F4F2] p-4 rounded-[16px] mb-8">
-                  <BookOpen className="h-8 w-8 text-[var(--color-charcoal)]" />
+              <Card className="flex flex-col items-start p-[40px] h-full shadow-[var(--shadow-premium)] dark:bg-[#111111] dark:border-[#333333]">
+                <div className="bg-[#F4F4F2] dark:bg-black p-4 rounded-[16px] mb-8 dark:border dark:border-[#333333]">
+                  <BookOpen className="h-8 w-8 text-[var(--color-charcoal)] dark:text-white" />
                 </div>
-                <h3 className="text-headline-lg font-display font-semibold mb-4">Smart Summaries</h3>
-                <p className="text-body-lg text-[var(--color-gray)] leading-relaxed">
+                <h3 className="text-headline-lg font-display font-semibold mb-4 dark:text-white">Smart Summaries</h3>
+                <p className="text-body-lg text-[var(--color-gray)] dark:text-gray-400 leading-relaxed">
                   Condense sprawling notes and complex topics into digestible, high-yield study guides.
                 </p>
               </Card>
             </motion.div>
             
             <motion.div variants={itemVariants}>
-              <Card className="flex flex-col items-start p-[40px] h-full shadow-[var(--shadow-premium)]">
-                <div className="bg-[var(--color-lime)]/20 p-4 rounded-[16px] mb-8">
-                  <Brain className="h-8 w-8 text-[var(--color-charcoal)]" />
+              <Card className="flex flex-col items-start p-[40px] h-full shadow-[var(--shadow-premium)] dark:bg-[#111111] dark:border-[#333333]">
+                <div className="bg-[var(--color-lime)]/20 p-4 rounded-[16px] mb-8 dark:border dark:border-[#333333]">
+                  <Brain className="h-8 w-8 text-[var(--color-charcoal)] dark:text-[var(--color-lime)]" />
                 </div>
-                <h3 className="text-headline-lg font-display font-semibold mb-4">Adaptive Quizzes</h3>
-                <p className="text-body-lg text-[var(--color-gray)] leading-relaxed">
+                <h3 className="text-headline-lg font-display font-semibold mb-4 dark:text-white">Adaptive Quizzes</h3>
+                <p className="text-body-lg text-[var(--color-gray)] dark:text-gray-400 leading-relaxed">
                   Test your retention instantly. The AI generates targeted questions and explains exactly why you were wrong.
                 </p>
               </Card>
             </motion.div>
 
             <motion.div variants={itemVariants}>
-              <Card className="flex flex-col items-start p-[40px] h-full shadow-[var(--shadow-premium)]">
-                <div className="bg-[#E2E3E1] p-4 rounded-[16px] mb-8">
-                  <Sparkles className="h-8 w-8 text-[var(--color-charcoal)]" />
+              <Card className="flex flex-col items-start p-[40px] h-full shadow-[var(--shadow-premium)] dark:bg-[#111111] dark:border-[#333333]">
+                <div className="bg-[#E2E3E1] dark:bg-black p-4 rounded-[16px] mb-8 dark:border dark:border-[#333333]">
+                  <Sparkles className="h-8 w-8 text-[var(--color-charcoal)] dark:text-white" />
                 </div>
-                <h3 className="text-headline-lg font-display font-semibold mb-4">Interactive Flashcards</h3>
-                <p className="text-body-lg text-[var(--color-gray)] leading-relaxed">
+                <h3 className="text-headline-lg font-display font-semibold mb-4 dark:text-white">Interactive Flashcards</h3>
+                <p className="text-body-lg text-[var(--color-gray)] dark:text-gray-400 leading-relaxed">
                   Flip through automatically generated concepts and definitions to lock in key terminology.
                 </p>
               </Card>

@@ -34,11 +34,11 @@ export function Dashboard() {
     >
       <motion.div variants={itemVariants} className="w-full flex justify-between items-end mb-[60px]">
         <div>
-          <h1 className="text-headline-xl font-display font-bold mb-2">Dashboard</h1>
-          <p className="text-body-lg text-[var(--color-gray)]">Your learning progress at a glance.</p>
+          <h1 className="text-headline-xl font-display font-bold mb-2 text-black dark:text-white">Dashboard</h1>
+          <p className="text-body-lg text-[var(--color-gray)] dark:text-gray-400">Your learning progress at a glance.</p>
         </div>
         <Link to="/dashboard/new">
-          <Button className="bg-[var(--color-lime)] text-[var(--color-charcoal)] hover:bg-[var(--color-lime-hover)] border-none">
+          <Button className="bg-[#7B1E2B] text-white hover:bg-[#8B1E3F] border-2 border-black dark:border-[#333333] font-bold">
             <Plus className="mr-2 h-5 w-5" />
             New Study
           </Button>
@@ -49,12 +49,12 @@ export function Dashboard() {
       <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 gap-[24px] w-full mb-[60px]">
         {/* Daily Review */}
         <motion.div variants={itemVariants} className="col-span-1">
-          <Card className="bg-white border-4 border-black flex flex-col items-center justify-center p-[40px] min-h-[320px] text-center">
-            <Calendar className="h-16 w-16 text-black mb-6" />
-            <h3 className="font-display font-bold text-[32px] text-black mb-3">Daily Review</h3>
-            <p className="text-lg font-medium text-black/70 mb-6">Focus on your weak concepts across sessions.</p>
+          <Card className="bg-white dark:bg-black border-4 border-black dark:border-[#333333] flex flex-col items-center justify-center p-[40px] min-h-[320px] text-center">
+            <Calendar className="h-16 w-16 text-black dark:text-white mb-6" />
+            <h3 className="font-display font-bold text-[32px] text-black dark:text-white mb-3">Daily Review</h3>
+            <p className="text-lg font-medium text-black/70 dark:text-white/70 mb-6">Focus on your weak concepts across sessions.</p>
             <Link to="/daily-review">
-              <Button size="lg" className="border-2 border-black bg-[#ECF95A] hover:bg-[#c3cf33] text-black font-bold">
+              <Button size="lg" className="border-2 border-transparent bg-[#ECF95A] hover:bg-[#c3cf33] text-black font-bold">
                 Start Review
               </Button>
             </Link>
@@ -63,18 +63,18 @@ export function Dashboard() {
 
         {/* Continue Preparation */}
         <motion.div variants={itemVariants} className="col-span-1">
-          <Card className="bg-white border-4 border-black flex flex-col items-center justify-center p-[40px] min-h-[320px] text-center">
-            <PlayCircle className="h-16 w-16 text-black mb-6" />
-            <h3 className="font-display font-bold text-[32px] text-black mb-3">Continue Session</h3>
+          <Card className="bg-white dark:bg-black border-4 border-black dark:border-[#333333] flex flex-col items-center justify-center p-[40px] min-h-[320px] text-center">
+            <PlayCircle className="h-16 w-16 text-black dark:text-white mb-6" />
+            <h3 className="font-display font-bold text-[32px] text-black dark:text-white mb-3">Continue Session</h3>
             {latestSession ? (
               <>
-                <p className="text-lg font-medium text-black/70 line-clamp-1 mb-6">{latestSession.title || 'Untitled Session'}</p>
+                <p className="text-lg font-medium text-black/70 dark:text-white/70 line-clamp-1 mb-6">{latestSession.title || 'Untitled Session'}</p>
                 <Link to={`/study/${latestSession.id}/summary`}>
-                  <Button className="bg-[#7B1E2B] text-white hover:bg-[#8B1E3F] border-none font-bold" size="lg">Resume</Button>
+                  <Button className="bg-[#ECF95A] text-black hover:bg-[#c3cf33] border-2 border-transparent font-bold" size="lg">Resume</Button>
                 </Link>
               </>
             ) : (
-              <p className="text-sm font-medium text-black/70">No active sessions.</p>
+              <p className="text-sm font-medium text-black/70 dark:text-white/70">No active sessions.</p>
             )}
           </Card>
         </motion.div>
@@ -83,9 +83,9 @@ export function Dashboard() {
       {/* Recent Sessions List */}
       <motion.div variants={containerVariants} className="w-full">
         <motion.div variants={itemVariants} className="flex justify-between items-center mb-8">
-          <h2 className="text-headline-lg font-display font-bold">Recent Sessions</h2>
+          <h2 className="text-headline-lg font-display font-bold text-black dark:text-white">Recent Sessions</h2>
           {sessions.length > 5 && (
-            <Link to="/library" className="text-body-md font-bold text-[var(--color-charcoal)] hover:underline flex items-center">
+            <Link to="/library" className="text-body-md font-bold text-[var(--color-charcoal)] dark:text-gray-400 hover:underline flex items-center">
               View all <ChevronRight className="ml-1 h-5 w-5" />
             </Link>
           )}
@@ -96,19 +96,19 @@ export function Dashboard() {
             {recentSessions.map(session => (
               <motion.div key={session.id} variants={itemVariants}>
                 <Link to={`/study/${session.id}/summary`} className="block transform transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1">
-                  <Card className="p-[32px] flex flex-col sm:flex-row sm:items-center justify-between shadow-sm border-2 border-black hover:border-[#7B1E2B] transition-colors">
+                  <Card className="p-[32px] bg-[var(--color-sage)] dark:bg-[#1A1A1A] flex flex-col sm:flex-row sm:items-center justify-between shadow-sm border-2 border-black dark:border-[#333333] hover:border-[#7B1E2B] transition-colors">
                     <div className="flex items-center gap-6">
-                      <div className="bg-[#F4F4F2] p-4 rounded-[16px] hidden sm:block border-2 border-transparent">
-                        <Clock className="h-7 w-7 text-black" />
+                      <div className="bg-[#F4F4F2] dark:bg-black p-4 rounded-[16px] hidden sm:block border-2 border-transparent dark:border-[#333333]">
+                        <Clock className="h-7 w-7 text-black dark:text-white" />
                       </div>
                       <div>
-                        <h3 className="font-display font-bold text-body-lg md:text-2xl text-black">{session.title || 'Untitled Session'}</h3>
-                        <p className="text-body-md text-gray-600 mt-2">
+                        <h3 className="font-display font-bold text-body-lg md:text-2xl text-black dark:text-white">{session.title || 'Untitled Session'}</h3>
+                        <p className="text-body-md text-gray-700 dark:text-gray-300 mt-2">
                           {new Date(session.createdAt).toLocaleDateString()} • {session.flashcards?.length || 0} cards • {session.quiz?.length || 0} questions
                         </p>
                       </div>
                     </div>
-                    <Button variant="ghost" className="mt-4 sm:mt-0 hidden sm:flex rounded-full border-2 border-black text-black hover:bg-[#ECF95A]">
+                    <Button variant="ghost" className="mt-4 sm:mt-0 hidden sm:flex rounded-full border-2 border-black dark:border-white text-black dark:text-white hover:bg-[#ECF95A] dark:hover:bg-white dark:hover:text-black transition-colors">
                       Review
                       <ChevronRight className="ml-2 h-5 w-5" />
                     </Button>

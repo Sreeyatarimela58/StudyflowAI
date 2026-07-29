@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
 @theme {
   --color-sage: #D1D5C0;
   --color-sage-dim: #C5C9B4;

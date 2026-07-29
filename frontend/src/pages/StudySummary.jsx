@@ -56,15 +56,15 @@ export function StudySummary() {
       variants={containerVariants}
     >
       <motion.div variants={itemVariants} className="w-full flex flex-col md:flex-row justify-between items-start md:items-center mb-[64px] gap-6">
-        <h1 className="text-headline-xl font-display font-bold text-[#7B1E2B]">
+        <h1 className="text-headline-xl font-display font-bold text-[#7B1E2B] dark:text-[#ECF95A]">
           {session.title || 'Study Summary'}
         </h1>
         <div className="flex gap-4">
-          <Button variant="secondary" size="sm" onClick={handleCopy} className="p-4 rounded-full border-2 border-[#c3cf33]">
+          <Button variant="secondary" size="sm" onClick={handleCopy} className="p-4 rounded-full border-2 border-[#c3cf33] dark:border-[#333333] dark:bg-[#1A1A1A] dark:text-white">
             <Copy className="h-5 w-5 sm:mr-2" />
             <span className="hidden sm:inline">Copy</span>
           </Button>
-          <Button variant="secondary" size="sm" onClick={handleDownloadPDF} className="p-4 rounded-full border-2 border-[#c3cf33]">
+          <Button variant="secondary" size="sm" onClick={handleDownloadPDF} className="p-4 rounded-full border-2 border-[#c3cf33] dark:border-[#333333] dark:bg-[#1A1A1A] dark:text-white">
             <Download className="h-5 w-5 sm:mr-2" />
             <span className="hidden sm:inline">Export PDF</span>
           </Button>
@@ -75,9 +75,9 @@ export function StudySummary() {
         <div className="md:col-span-2 space-y-[32px]">
           {session.quizResults && (
             <motion.div variants={itemVariants}>
-              <Card className="p-[40px] md:p-[64px] bg-white border-4 border-black shadow-none mb-[32px]">
-                <h2 className="flex items-center text-headline-xl font-display font-bold mb-12 text-black">
-                  <Brain className="mr-4 h-10 w-10 text-[#7B1E2B]" />
+              <Card className="p-[40px] md:p-[64px] bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-[#333333] shadow-none mb-[32px]">
+                <h2 className="flex items-center text-headline-xl font-display font-bold mb-12 text-black dark:text-white">
+                  <Brain className="mr-4 h-10 w-10 text-[#7B1E2B] dark:text-[#ECF95A]" />
                   Detailed Analysis
                 </h2>
                 <div className="grid md:grid-cols-2 gap-[40px]">
@@ -101,12 +101,12 @@ export function StudySummary() {
           )}
 
           <motion.div variants={itemVariants}>
-            <Card className="p-[40px] md:p-[64px] border-2 border-[#c3cf33]">
-              <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black">
-                <FileText className="mr-4 h-8 w-8 text-black" />
+            <Card className="p-[40px] md:p-[64px] bg-white dark:bg-[#1A1A1A] border-2 border-[#c3cf33] dark:border-[#333333]">
+              <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black dark:text-white">
+                <FileText className="mr-4 h-8 w-8 text-black dark:text-white" />
                 Comprehensive Summary
               </h2>
-              <div className="prose prose-lg max-w-none text-body-lg text-[var(--color-gray)] leading-relaxed">
+              <div className="prose prose-lg max-w-none text-body-lg text-[var(--color-gray)] dark:text-gray-300 leading-relaxed">
                 {(session.summary || '').split('\n').map((para, i) => (
                   <p key={i} className="mb-6">{para}</p>
                 ))}
@@ -115,8 +115,8 @@ export function StudySummary() {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <Card className="p-[40px] md:p-[64px] bg-white border-2 border-[#c3cf33] shadow-none text-[var(--color-charcoal)]">
-              <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black">
+            <Card className="p-[40px] md:p-[64px] bg-white dark:bg-[#1A1A1A] border-2 border-[#c3cf33] dark:border-[#333333] shadow-none h-full">
+              <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black dark:text-white">
                 <CheckCircle2 className="mr-4 h-8 w-8 text-[#c3cf33]" />
                 Key Takeaways
               </h2>
@@ -126,7 +126,7 @@ export function StudySummary() {
                     <div className="bg-[#c3cf33]/20 p-2 rounded-full mt-1">
                       <div className="bg-[#c3cf33] h-2 w-2 rounded-full"></div>
                     </div>
-                    <span className="text-body-lg text-[var(--color-charcoal)] opacity-90">{rec}</span>
+                    <span className="text-body-lg text-[var(--color-gray)] dark:text-gray-300 leading-relaxed">{rec}</span>
                   </li>
                 ))}
               </ul>
@@ -134,12 +134,12 @@ export function StudySummary() {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <Card className="p-[40px] md:p-[64px] bg-[#F4F4F2] border-2 border-black shadow-none text-[var(--color-charcoal)] mt-[32px]">
-              <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black">
-                <Brain className="mr-4 h-8 w-8 text-[#7B1E2B]" />
+            <Card className="p-[40px] md:p-[64px] bg-[#F4F4F2] dark:bg-[#1A1A1A] border-2 border-black dark:border-[#333333] shadow-none h-full">
+              <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black dark:text-white">
+                <Brain className="mr-4 h-8 w-8 text-[#7B1E2B] dark:text-[#ECF95A]" />
                 AI Recommendations
               </h2>
-              <p className="text-body-lg text-black font-medium leading-relaxed">
+              <p className="text-body-lg text-[var(--color-gray)] dark:text-gray-300 leading-relaxed">
                 {session.aiRecommendations || "Based on this session, I recommend focusing on the core concepts first. Try taking the targeted quiz to assess your baseline understanding, then use the flashcards to drill the terminology. Re-read the sections on the more complex topics if your quiz score is below 80%."}
               </p>
             </Card>
@@ -148,12 +148,12 @@ export function StudySummary() {
 
         <div className="space-y-[32px]">
           <motion.div variants={itemVariants}>
-            <Card className="p-[40px] flex flex-col h-full min-h-[300px] border-2 border-[#c3cf33]">
-              <div className="bg-[#E2E3E1] p-4 rounded-[16px] w-fit mb-6">
-                <Layers className="h-8 w-8 text-black" />
+            <Card className="p-[40px] flex flex-col h-full min-h-[300px] border-2 border-[#c3cf33] dark:border-[#333333] bg-white dark:bg-[#1A1A1A]">
+              <div className="bg-[#E2E3E1] dark:bg-[#333333] p-4 rounded-[16px] w-fit mb-6">
+                <Layers className="h-8 w-8 text-black dark:text-white" />
               </div>
-              <h3 className="text-headline-lg font-display font-bold mb-3 text-black">Flashcards</h3>
-              <p className="text-body-lg text-[var(--color-gray)] mb-8">
+              <h3 className="text-headline-lg font-display font-bold mb-3 text-black dark:text-white">Flashcards</h3>
+              <p className="text-body-lg text-[var(--color-gray)] dark:text-gray-400 mb-8">
                 {session.flashcards?.length || 0} cards to lock in key terminology.
               </p>
               <Link to={`/study/${id}/flashcards`} className="mt-auto">
@@ -165,11 +165,11 @@ export function StudySummary() {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <Card className="p-[40px] flex flex-col h-full min-h-[300px] border-2 border-[#c3cf33] relative">
-              <div className="bg-[#c3cf33]/20 p-4 rounded-[16px] w-fit mb-6">
-                <Brain className="h-8 w-8 text-black" />
+            <Card className="p-[40px] flex flex-col h-full min-h-[300px] border-2 border-[#c3cf33] dark:border-[#333333] bg-white dark:bg-[#1A1A1A] relative">
+              <div className="bg-[#c3cf33]/20 dark:bg-[#ECF95A]/20 p-4 rounded-[16px] w-fit mb-6">
+                <Brain className="h-8 w-8 text-black dark:text-white" />
               </div>
-              <h3 className="text-headline-lg font-display font-bold mb-3 text-black">Knowledge Quiz</h3>
+              <h3 className="text-headline-lg font-display font-bold mb-3 text-black dark:text-white">Knowledge Quiz</h3>
               
               {session.quizResults ? (
                 <>

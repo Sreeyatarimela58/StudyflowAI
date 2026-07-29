@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { StudyProvider } from './contexts/StudyContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { Navbar } from './components/Navbar';
 
 // Placeholder Pages
@@ -67,23 +68,25 @@ function AppRoutes() {
 function App() {
   return (
     <Router>
-      <AuthProvider>
-        <StudyProvider>
-          <div className="flex flex-col min-h-screen bg-[var(--color-sage)] text-[var(--color-charcoal)] font-body">
-            <AppRoutes />
-          </div>
-          <Toaster 
-            position="bottom-right"
-            toastOptions={{
-              className: 'font-body rounded-xl border border-[var(--color-charcoal)]/10 shadow-lg',
-              style: {
-                background: 'var(--color-surface)',
-                color: 'var(--color-charcoal)',
-              }
-            }}
-          />
-        </StudyProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <StudyProvider>
+            <div className="flex flex-col min-h-screen bg-[var(--color-sage)] dark:bg-black text-[var(--color-charcoal)] dark:text-white font-body transition-colors duration-300">
+              <AppRoutes />
+            </div>
+            <Toaster 
+              position="bottom-right"
+              toastOptions={{
+                className: 'font-body rounded-xl border border-[var(--color-charcoal)]/10 shadow-lg dark:bg-[#1A1A1A] dark:text-white dark:border-white/10',
+                style: {
+                  background: 'var(--color-surface)',
+                  color: 'var(--color-charcoal)',
+                }
+              }}
+            />
+          </StudyProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </Router>
   );
 }

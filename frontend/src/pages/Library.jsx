@@ -61,17 +61,17 @@ export function Library() {
 
       <motion.div variants={itemVariants} className="w-full flex flex-col sm:flex-row gap-4 mb-12">
         <div className="relative flex-grow">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 text-[var(--color-gray)]" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 text-[var(--color-gray)] dark:text-gray-400" />
           <Input 
             placeholder="Search sessions..." 
-            className="pl-14 py-4 text-body-lg border-2 border-[#7B1E2B]"
+            className="pl-14 py-4 text-body-lg border-2 border-[#7B1E2B] dark:border-[#333333] dark:bg-[#1A1A1A] dark:text-white"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         
         <select 
-          className="rounded-[var(--radius-button)] bg-[#F4F4F2] px-8 py-4 text-body-lg text-[var(--color-charcoal)] border-2 border-[#7B1E2B] focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] cursor-pointer appearance-none font-medium"
+          className="rounded-[var(--radius-button)] bg-[#F4F4F2] dark:bg-[#1A1A1A] px-8 py-4 text-body-lg text-[var(--color-charcoal)] dark:text-white border-2 border-[#7B1E2B] dark:border-[#333333] focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] cursor-pointer appearance-none font-medium"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
         >
@@ -105,14 +105,14 @@ export function Library() {
           <div className="grid gap-[24px]">
             {sortedSessions.map(session => (
               <motion.div key={session.id} variants={itemVariants}>
-                <Card className="p-[40px] flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-[#8B1E3F] transition-colors shadow-sm relative group border-2 border-[#7B1E2B]">
+                <Card className="p-[40px] flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-[#8B1E3F] transition-colors shadow-sm relative group border-2 border-[#7B1E2B] dark:border-[#333333] bg-white dark:bg-[#1A1A1A]">
                   <div className="flex items-start gap-6 flex-grow">
-                    <div className="bg-[#F4F4F2] p-4 rounded-[16px] hidden sm:block">
-                      <Clock className="h-8 w-8 text-[var(--color-gray)]" />
+                    <div className="bg-[#F4F4F2] dark:bg-black p-4 rounded-[16px] hidden sm:block">
+                      <Clock className="h-8 w-8 text-[var(--color-gray)] dark:text-gray-400" />
                     </div>
                     <div>
-                      <h3 className="font-display font-bold text-[32px] text-black mb-3">{session.title || 'Untitled Session'}</h3>
-                      <p className="text-body-lg text-[var(--color-charcoal-muted)] line-clamp-2 max-w-3xl mb-4 leading-relaxed">
+                      <h3 className="font-display font-bold text-[32px] text-black dark:text-white mb-3">{session.title || 'Untitled Session'}</h3>
+                      <p className="text-body-lg text-[var(--color-charcoal-muted)] dark:text-gray-300 line-clamp-2 max-w-3xl mb-4 leading-relaxed">
                         {session.summary}
                       </p>
                       <div className="flex gap-4 text-label-sm font-bold uppercase tracking-widest text-[var(--color-gray)]">

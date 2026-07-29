@@ -53,7 +53,7 @@ export function DailyReview() {
   if (weakQuestions.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[calc(100svh-100px)] w-full max-w-[1280px] mx-auto px-6">
-        <Card className="p-[64px] border-4 border-black text-center bg-white shadow-none">
+        <Card className="p-[64px] border-4 border-black dark:border-[#333333] text-center bg-white dark:bg-[#1A1A1A] shadow-none">
           <EmptyState 
             title="You're all caught up!" 
             description="You don't have any weak concepts to review right now. Complete more quizzes to identify areas for improvement."
@@ -73,24 +73,24 @@ export function DailyReview() {
       <div className="flex flex-col items-center min-h-[calc(100svh-100px)] w-full max-w-[1280px] mx-auto px-6 py-[64px]">
         <div className="w-full flex justify-between items-center mb-[64px]">
           <div>
-            <h1 className="text-headline-xl font-display font-bold text-black mb-2">Daily Review</h1>
-            <p className="text-body-lg text-[var(--color-gray)]">Focusing on your recent weak concepts.</p>
+            <h1 className="text-headline-xl font-display font-bold text-black dark:text-white mb-2">Daily Review</h1>
+            <p className="text-body-lg text-[var(--color-gray)] dark:text-gray-400">Focusing on your recent weak concepts.</p>
           </div>
           <Link to="/dashboard">
-            <Button variant="ghost" className="rounded-full border-2 border-black hover:bg-[#ECF95A]">
+            <Button variant="ghost" className="rounded-full border-2 border-black dark:border-[#333333] hover:bg-[#ECF95A] dark:hover:bg-[#333333] text-black dark:text-white">
               <X className="mr-2 h-5 w-5" /> Close
             </Button>
           </Link>
         </div>
 
         <div className="w-full grid md:grid-cols-2 gap-[32px] mb-[64px]">
-          <Card className="p-[40px] border-4 border-black bg-white shadow-none h-full flex flex-col justify-between">
+          <Card className="p-[40px] border-4 border-black dark:border-[#333333] bg-white dark:bg-[#1A1A1A] shadow-none h-full flex flex-col justify-between">
             <div>
-              <div className="bg-[#ECF95A] p-4 rounded-[16px] w-fit border-2 border-black mb-6">
-                <Brain className="h-8 w-8 text-black" />
+              <div className="bg-[#ECF95A] dark:bg-black p-4 rounded-[16px] w-fit border-2 border-black dark:border-[#333333] mb-6">
+                <Brain className="h-8 w-8 text-black dark:text-[#ECF95A]" />
               </div>
-              <h3 className="text-headline-lg font-display font-bold mb-3 text-black">Targeted Quiz</h3>
-              <p className="text-body-lg text-[var(--color-gray)] mb-8 font-medium">
+              <h3 className="text-headline-lg font-display font-bold mb-3 text-black dark:text-white">Targeted Quiz</h3>
+              <p className="text-body-lg text-[var(--color-gray)] dark:text-gray-400 mb-8 font-medium">
                 Test yourself on the {weakQuestions.length} concepts you missed recently.
               </p>
             </div>
@@ -99,29 +99,29 @@ export function DailyReview() {
             </Button>
           </Card>
 
-          <Card className="p-[40px] border-4 border-black bg-white shadow-none h-full flex flex-col justify-between">
+          <Card className="p-[40px] border-4 border-black dark:border-[#333333] bg-white dark:bg-[#1A1A1A] shadow-none h-full flex flex-col justify-between">
             <div>
-              <div className="bg-[#F4F4F2] p-4 rounded-[16px] w-fit border-2 border-black mb-6">
-                <Layers className="h-8 w-8 text-black" />
+              <div className="bg-[#F4F4F2] dark:bg-black p-4 rounded-[16px] w-fit border-2 border-black dark:border-[#333333] mb-6">
+                <Layers className="h-8 w-8 text-black dark:text-white" />
               </div>
-              <h3 className="text-headline-lg font-display font-bold mb-3 text-black">Flashcards</h3>
-              <p className="text-body-lg text-[var(--color-gray)] mb-8 font-medium">
+              <h3 className="text-headline-lg font-display font-bold mb-3 text-black dark:text-white">Flashcards</h3>
+              <p className="text-body-lg text-[var(--color-gray)] dark:text-gray-400 mb-8 font-medium">
                 Quickly memorize the {weakQuestions.length} concepts you missed.
               </p>
             </div>
-            <Button size="lg" onClick={startFlashcards} className="w-full bg-black text-white hover:bg-black/80 font-bold border-2 border-black">
+            <Button size="lg" onClick={startFlashcards} className="w-full bg-black dark:bg-[#333333] text-white hover:bg-black/80 font-bold border-2 border-black dark:border-[#333333]">
               Review Flashcards
             </Button>
           </Card>
         </div>
 
         <div className="w-full">
-          <h2 className="text-2xl font-display font-bold mb-6 text-black border-b-4 border-black pb-4 inline-block">Concepts to Review</h2>
+          <h2 className="text-2xl font-display font-bold mb-6 text-black dark:text-white border-b-4 border-black dark:border-[#333333] pb-4 inline-block">Concepts to Review</h2>
           <div className="space-y-4">
             {weakQuestions.map((q, idx) => (
-              <div key={idx} className="bg-white p-6 border-2 border-black rounded-[16px] flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-[#7B1E2B] transition-colors">
-                <p className="text-body-lg font-medium text-black line-clamp-2">{q.question}</p>
-                <span className="shrink-0 inline-block bg-[#F4F4F2] px-3 py-1 rounded-full border border-black text-xs font-bold uppercase text-[var(--color-gray)]">
+              <div key={idx} className="bg-white dark:bg-[#1A1A1A] p-6 border-2 border-black dark:border-[#333333] rounded-[16px] flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-[#7B1E2B] transition-colors">
+                <p className="text-body-lg font-medium text-black dark:text-white line-clamp-2">{q.question}</p>
+                <span className="shrink-0 inline-block bg-[#F4F4F2] dark:bg-[#333333] px-3 py-1 rounded-full border border-black dark:border-[#555] text-xs font-bold uppercase text-[var(--color-gray)] dark:text-gray-300">
                   {q.sessionTitle || 'Session'}
                 </span>
               </div>

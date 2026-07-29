@@ -82,36 +82,36 @@ export function NewStudy() {
       variants={containerVariants}
     >
       <motion.div variants={itemVariants} className="w-full mb-[80px] text-center max-w-3xl mx-auto">
-        <h1 className="text-headline-xl font-display font-bold mb-4 italic">What are we learning today?</h1>
-        <p className="text-body-lg text-[var(--color-gray)] mx-auto">
+        <h1 className="text-headline-xl font-display font-bold mb-4 italic text-black dark:text-white">What are we learning today?</h1>
+        <p className="text-body-lg text-[var(--color-gray)] dark:text-gray-400 mx-auto">
           Paste your notes, syllabus, or just a topic. Our AI will structure it into a comprehensive study session.
         </p>
       </motion.div>
 
       <motion.div variants={itemVariants} className="w-full max-w-4xl mx-auto">
-        <Card className="w-full p-[40px] md:p-[64px] border-2 border-[#7B1E2B]">
+        <Card className="w-full p-[40px] md:p-[64px] border-4 border-black dark:border-[#333333] bg-white dark:bg-[#1A1A1A] shadow-none">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-[32px]">
           
           <div>
-            <label className="flex items-center text-headline-lg font-display font-bold mb-4" htmlFor="title">
-              <FileText className="mr-3 h-6 w-6 text-[var(--color-gray)]" />
+            <label className="flex items-center text-headline-lg font-display font-bold mb-4 text-black dark:text-white" htmlFor="title">
+              <FileText className="mr-3 h-6 w-6 text-black dark:text-white" />
               Session Title (Optional)
             </label>
             <Input 
               id="title" 
               placeholder="e.g. Introduction to Cellular Biology"
               {...register('title')}
-              className="py-5 text-body-lg border-2 border-black bg-white text-black placeholder:text-gray-500"
+              className="py-5 text-body-lg border-2 border-black dark:border-[#333333] bg-white dark:bg-[#1A1A1A] text-black dark:text-white placeholder:text-gray-500"
             />
           </div>
 
           <div>
-            <label className="flex items-center text-headline-lg font-display font-bold mb-4" htmlFor="content">
-              <Sparkles className="mr-3 h-6 w-6 text-[var(--color-lime-hover)]" />
+            <label className="flex items-center text-headline-lg font-display font-bold mb-4 text-black dark:text-white" htmlFor="content">
+              <Sparkles className="mr-3 h-6 w-6 text-[#ECF95A] dark:text-[#ECF95A]" style={{ color: "var(--color-lime-hover)" }} />
               Study Material
             </label>
-            <div className="flex justify-between items-end mb-6">
-              <p className="text-[var(--color-gray)] text-body-md max-w-2xl">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-4">
+              <p className="text-[var(--color-gray)] dark:text-gray-400 text-body-md max-w-2xl">
                 Paste your raw notes, definitions, or an entire article here. Minimum 50 characters for best results.
               </p>
               <div className="relative">
@@ -122,7 +122,7 @@ export function NewStudy() {
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   disabled={isUploading}
                 />
-                <Button type="button" variant="secondary" className="pointer-events-none" isLoading={isUploading}>
+                <Button type="button" variant="secondary" className="pointer-events-none border-2 border-black dark:border-[#333333] dark:text-white bg-[#F4F4F2] dark:bg-[#222]" isLoading={isUploading}>
                   <Upload className="w-4 h-4 mr-2" />
                   Upload PDF
                 </Button>
@@ -131,7 +131,7 @@ export function NewStudy() {
             <Textarea 
               id="content" 
               placeholder="Paste your notes here..."
-              className="min-h-[250px] text-lg border-2 border-black bg-white text-black placeholder:text-gray-500"
+              className="min-h-[250px] text-lg border-2 border-black dark:border-[#333333] bg-white dark:bg-[#1A1A1A] text-black dark:text-white placeholder:text-gray-500"
               {...register('content', { 
                 required: 'Please provide some material to study',
                 minLength: { value: 20, message: 'Please provide at least 20 characters of material.' }
@@ -140,11 +140,11 @@ export function NewStudy() {
             />
           </div>
 
-          <div className="flex justify-end pt-8 border-t border-[var(--color-charcoal)]/10">
+          <div className="flex justify-end pt-8 border-t border-[var(--color-charcoal)]/10 dark:border-[#333333]">
             <Button 
               type="submit" 
               size="lg" 
-              className="w-full md:w-auto"
+              className="w-full md:w-auto bg-[#7B1E2B] text-white hover:bg-[#8B1E3F] border-2 border-black dark:border-[#333333] font-bold"
               isLoading={isSubmitting}
             >
               Generate Study Plan
