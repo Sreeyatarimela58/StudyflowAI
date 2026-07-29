@@ -7,6 +7,7 @@ import { Button } from '../components/Button';
 import { EmptyState } from '../components/EmptyState';
 import { downloadPDF } from '../utils/pdfExport';
 import { motion } from 'framer-motion';
+import { RefinementPanel } from '../components/RefinementPanel';
 
 export function StudySummary() {
   const { id } = useParams();
@@ -75,11 +76,11 @@ export function StudySummary() {
           {session.title || 'Study Summary'}
         </h1>
         <div className="flex gap-4">
-          <Button variant="secondary" size="sm" onClick={handleCopy} className="p-4 rounded-full border-2 border-[#c3cf33] dark:border-[#333333] dark:bg-[#1A1A1A] dark:text-white">
+          <Button variant="secondary" size="sm" onClick={handleCopy} aria-label="Copy Summary" className="p-4 rounded-full border-2 border-[#c3cf33] dark:border-[#333333] dark:bg-[#1A1A1A] dark:text-white">
             <Copy className="h-5 w-5 sm:mr-2" />
             <span className="hidden sm:inline">Copy</span>
           </Button>
-          <Button variant="secondary" size="sm" onClick={handleDownloadPDF} className="p-4 rounded-full border-2 border-[#c3cf33] dark:border-[#333333] dark:bg-[#1A1A1A] dark:text-white">
+          <Button variant="secondary" size="sm" onClick={handleDownloadPDF} aria-label="Export PDF" className="p-4 rounded-full border-2 border-[#c3cf33] dark:border-[#333333] dark:bg-[#1A1A1A] dark:text-white">
             <Download className="h-5 w-5 sm:mr-2" />
             <span className="hidden sm:inline">Export PDF</span>
           </Button>
@@ -144,107 +145,119 @@ export function StudySummary() {
           )}
 
           <div className="grid md:grid-cols-2 gap-[32px]">
-            <motion.div variants={itemVariants}>
-              <Card className="p-[40px] md:p-[64px] bg-white dark:bg-[#1A1A1A] border-2 border-[#c3cf33] dark:border-[#333333] h-full">
-                <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black dark:text-white">
-                  <FileText className="mr-4 h-8 w-8 text-black dark:text-white" />
-                  Comprehensive Summary
-                </h2>
-                <div className="prose prose-lg max-w-none text-body-lg text-[var(--color-gray)] dark:text-gray-300 leading-relaxed">
-                  {(session.summary || '').split('\n').map((para, i) => (
-                    <p key={i} className="mb-6">{para}</p>
-                  ))}
-                </div>
-              </Card>
-            </motion.div>
+            {session.summary && (
+              <motion.div variants={itemVariants} layout>
+                <Card className="p-[40px] md:p-[64px] bg-white dark:bg-[#1A1A1A] border-2 border-[#c3cf33] dark:border-[#333333] h-full flex flex-col">
+                  <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black dark:text-white">
+                    <FileText className="mr-4 h-8 w-8 text-black dark:text-white" />
+                    Comprehensive Summary
+                  </h2>
+                  <motion.div layout className="prose prose-lg max-w-none text-body-lg text-[var(--color-gray)] dark:text-gray-300 leading-relaxed flex-1">
+                    {session.summary.split('\n').map((para, i) => (
+                      <p key={i} className="mb-6">{para}</p>
+                    ))}
+                  </motion.div>
+                  <RefinementPanel sessionId={id} target="summary" currentContent={session.summary} />
+                </Card>
+              </motion.div>
+            )}
 
-            <motion.div variants={itemVariants}>
-              <Card className="p-[40px] md:p-[64px] bg-white dark:bg-[#1A1A1A] border-2 border-[#c3cf33] dark:border-[#333333] shadow-none h-full">
-                <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black dark:text-white">
-                  <CheckCircle2 className="mr-4 h-8 w-8 text-[#c3cf33]" />
-                  Key Takeaways
-                </h2>
-                <ul className="space-y-6">
-                  {session.recommendations?.map((rec, i) => (
-                    <li key={i} className="flex items-start gap-4">
-                      <div className="bg-[#c3cf33]/20 p-2 rounded-full mt-1">
-                        <div className="bg-[#c3cf33] h-2 w-2 rounded-full"></div>
-                      </div>
-                      <span className="text-body-lg text-[var(--color-gray)] dark:text-gray-300 leading-relaxed">{rec}</span>
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-            </motion.div>
+            {session.recommendations && (
+              <motion.div variants={itemVariants}>
+                <Card className="p-[40px] md:p-[64px] bg-white dark:bg-[#1A1A1A] border-2 border-[#c3cf33] dark:border-[#333333] shadow-none h-full">
+                  <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black dark:text-white">
+                    <CheckCircle2 className="mr-4 h-8 w-8 text-[#c3cf33]" />
+                    Key Takeaways
+                  </h2>
+                  <ul className="space-y-6">
+                    {session.recommendations.map((rec, i) => (
+                      <li key={i} className="flex items-start gap-4">
+                        <div className="bg-[#c3cf33]/20 p-2 rounded-full mt-1">
+                          <div className="bg-[#c3cf33] h-2 w-2 rounded-full"></div>
+                        </div>
+                        <span className="text-body-lg text-[var(--color-gray)] dark:text-gray-300 leading-relaxed">{rec}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              </motion.div>
+            )}
           </div>
 
-          <motion.div variants={itemVariants}>
-            <Card className="p-[40px] md:p-[64px] bg-[#F4F4F2] dark:bg-[#1A1A1A] border-2 border-black dark:border-[#333333] shadow-none h-full">
-              <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black dark:text-white">
-                <Brain className="mr-4 h-8 w-8 text-[#7B1E2B] dark:text-[#ECF95A]" />
-                AI Recommendations
-              </h2>
-              <p className="text-body-lg text-[var(--color-gray)] dark:text-gray-300 leading-relaxed">
-                {session.aiRecommendations || "Based on this session, I recommend focusing on the core concepts first. Try taking the targeted quiz to assess your baseline understanding, then use the flashcards to drill the terminology. Re-read the sections on the more complex topics if your quiz score is below 80%."}
-              </p>
-            </Card>
-          </motion.div>
+          {(session.aiRecommendations || (session.quizResults && session.aiAnalysis)) && (
+            <motion.div variants={itemVariants} layout>
+              <Card className="p-[40px] md:p-[64px] bg-[#F4F4F2] dark:bg-[#1A1A1A] border-2 border-black dark:border-[#333333] shadow-none h-full flex flex-col">
+                <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black dark:text-white">
+                  <Brain className="mr-4 h-8 w-8 text-[#7B1E2B] dark:text-[#ECF95A]" />
+                  AI Recommendations
+                </h2>
+                <motion.p layout className="text-body-lg text-[var(--color-gray)] dark:text-gray-300 leading-relaxed flex-1">
+                  {session.aiRecommendations || "Based on this session, I recommend focusing on the core concepts first. Try taking the targeted quiz to assess your baseline understanding, then use the flashcards to drill the terminology. Re-read the sections on the more complex topics if your quiz score is below 80%."}
+                </motion.p>
+                <RefinementPanel sessionId={id} target="recommendations" currentContent={session.aiRecommendations || []} />
+              </Card>
+            </motion.div>
+          )}
         </div>
 
         <div className="grid md:grid-cols-2 gap-[32px] w-full mt-[32px]">
-          <motion.div variants={itemVariants}>
-            <Card className="p-[40px] flex flex-col h-full min-h-[300px] border-2 border-[#c3cf33] dark:border-[#333333] bg-white dark:bg-[#1A1A1A]">
-              <div className="bg-[#E2E3E1] dark:bg-[#333333] p-4 rounded-[16px] w-fit mb-6">
-                <Layers className="h-8 w-8 text-black dark:text-white" />
-              </div>
-              <h3 className="text-headline-lg font-display font-bold mb-3 text-black dark:text-white">Flashcards</h3>
-              <p className="text-body-lg text-[var(--color-gray)] dark:text-gray-400 mb-8">
-                {session.flashcards?.length || 0} cards to lock in key terminology.
-              </p>
-              <Link to={`/study/${id}/flashcards`} className="mt-auto">
-                <Button className="w-full">
-                  Review Cards
-                </Button>
-              </Link>
-            </Card>
-          </motion.div>
+          {session.flashcards && (
+            <motion.div variants={itemVariants}>
+              <Card className="p-[40px] flex flex-col h-full min-h-[300px] border-2 border-[#c3cf33] dark:border-[#333333] bg-white dark:bg-[#1A1A1A]">
+                <div className="bg-[#E2E3E1] dark:bg-[#333333] p-4 rounded-[16px] w-fit mb-6">
+                  <Layers className="h-8 w-8 text-black dark:text-white" />
+                </div>
+                <h3 className="text-headline-lg font-display font-bold mb-3 text-black dark:text-white">Flashcards</h3>
+                <p className="text-body-lg text-[var(--color-gray)] dark:text-gray-400 mb-8">
+                  {session.flashcards.length} cards to lock in key terminology.
+                </p>
+                <Link to={`/study/${id}/flashcards`} className="mt-auto">
+                  <Button className="w-full">
+                    Review Cards
+                  </Button>
+                </Link>
+              </Card>
+            </motion.div>
+          )}
 
-          <motion.div variants={itemVariants}>
-            <Card className="p-[40px] flex flex-col h-full min-h-[300px] border-2 border-[#c3cf33] dark:border-[#333333] bg-white dark:bg-[#1A1A1A] relative">
-              <div className="bg-[#c3cf33]/20 dark:bg-[#ECF95A]/20 p-4 rounded-[16px] w-fit mb-6">
-                <Brain className="h-8 w-8 text-black dark:text-white" />
-              </div>
-              <h3 className="text-headline-lg font-display font-bold mb-3 text-black dark:text-white">Knowledge Quiz</h3>
-              
-              {session.quizResults ? (
-                <>
-                  <div className="absolute top-8 right-8 bg-[#ECF95A] text-black px-3 py-1 rounded-full text-xs font-bold border-2 border-black">
-                    ATTEMPTED
-                  </div>
-                  <div className="flex items-end gap-2 mb-8">
-                    <span className="text-5xl font-display font-bold text-[#7B1E2B]">{session.quizResults.score}%</span>
-                    <span className="text-body-md text-gray-500 font-bold mb-2 uppercase">Score</span>
-                  </div>
-                  <Link to={`/study/${id}/quiz`} className="mt-auto">
-                    <Button className="w-full bg-[#7B1E2B] text-white hover:bg-[#8B1E3F] border-none">
-                      Re-attempt Quiz
-                    </Button>
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <p className="text-body-lg text-[var(--color-gray)] mb-8">
-                    {session.quiz?.length || 0} questions to test your adaptive retention.
-                  </p>
-                  <Link to={`/study/${id}/quiz`} className="mt-auto">
-                    <Button className="w-full bg-[#ECF95A] text-black hover:bg-[#c3cf33] border-none">
-                      Start Quiz
-                    </Button>
-                  </Link>
-                </>
-              )}
-            </Card>
-          </motion.div>
+          {session.quiz && (
+            <motion.div variants={itemVariants}>
+              <Card className="p-[40px] flex flex-col h-full min-h-[300px] border-2 border-[#c3cf33] dark:border-[#333333] bg-white dark:bg-[#1A1A1A] relative">
+                <div className="bg-[#c3cf33]/20 dark:bg-[#ECF95A]/20 p-4 rounded-[16px] w-fit mb-6">
+                  <Brain className="h-8 w-8 text-black dark:text-white" />
+                </div>
+                <h3 className="text-headline-lg font-display font-bold mb-3 text-black dark:text-white">Knowledge Quiz</h3>
+                
+                {session.quizResults ? (
+                  <>
+                    <div className="absolute top-8 right-8 bg-[#ECF95A] text-black px-3 py-1 rounded-full text-xs font-bold border-2 border-black">
+                      ATTEMPTED
+                    </div>
+                    <div className="flex items-end gap-2 mb-8">
+                      <span className="text-5xl font-display font-bold text-[#7B1E2B]">{session.quizResults.score}%</span>
+                      <span className="text-body-md text-gray-500 font-bold mb-2 uppercase">Score</span>
+                    </div>
+                    <Link to={`/study/${id}/quiz`} className="mt-auto">
+                      <Button className="w-full bg-[#7B1E2B] text-white hover:bg-[#8B1E3F] border-none">
+                        Re-attempt Quiz
+                      </Button>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-body-lg text-[var(--color-gray)] mb-8">
+                      {session.quiz.length} questions to test your adaptive retention.
+                    </p>
+                    <Link to={`/study/${id}/quiz`} className="mt-auto">
+                      <Button className="w-full bg-[#ECF95A] text-black hover:bg-[#c3cf33] border-none">
+                        Start Quiz
+                      </Button>
+                    </Link>
+                  </>
+                )}
+              </Card>
+            </motion.div>
+          )}
         </div>
       </div>
     </motion.div>

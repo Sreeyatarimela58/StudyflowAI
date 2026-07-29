@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { BookOpen, Sparkles, Brain, ArrowRight } from 'lucide-react';
 import { Button } from '../components/Button';
 import { Card } from '../components/Card';
-import { Marquee } from '../components/Marquee';
 import { useAuth } from '../contexts/AuthContext';
 import { motion } from 'framer-motion';
 
@@ -39,8 +38,6 @@ export function Landing() {
 
   return (
     <div className="flex flex-col w-full">
-      <Marquee items={topMarqueeItems} className="bg-[var(--color-lime)]" speed={50} direction="left" />
-
       {/* Hero Section */}
       <motion.section 
         className="flex flex-col items-center justify-center min-h-[70vh] px-6 py-20 text-center max-w-[1280px] mx-auto"
@@ -77,8 +74,6 @@ export function Landing() {
         </motion.div>
       </motion.section>
       
-      <Marquee items={bottomMarqueeItems} className="bg-[var(--color-lime)]" speed={45} direction="right" />
-
       {/* Features Section */}
       <motion.section 
         className="bg-transparent py-[120px] px-6 border-t border-[var(--color-charcoal)]/5"

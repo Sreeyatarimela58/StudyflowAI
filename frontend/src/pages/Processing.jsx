@@ -3,18 +3,16 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Brain, FileText, CheckCircle2, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from '../components/Card';
-import { AIFailureState } from '../components/AIFailureState';
-import { generateStudyMaterial } from '../services/api';
+import { AIErrorState } from '../components/AIErrorState';
 import { useStudy } from '../contexts/StudyContext';
 
 export function Processing() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { saveSession } = useStudy();
+  const { generateSession, streamState } = useStudy();
   const hasStarted = useRef(false);
 
-  const [status, setStatus] = useState('extracting'); // extracting, generating, formatting, done, error
-  const [error, setError] = useState(false);
+  const [status, setStatus] = useState('extracting');
 
   const requestData = location.state;
 
@@ -24,38 +22,23 @@ export function Processing() {
       return;
     }
 
+    setStatus('extracting');
+    
+    // Start cosmetic timers
+    const t1 = setTimeout(() => setStatus('generating'), 1500);
+    const t2 = setTimeout(() => setStatus('formatting'), 4500);
+
     try {
-      setError(false);
-      setStatus('extracting');
-      
-      // Artificial delay for UX "Extracting"
-      await new Promise(r => setTimeout(r, 1500));
-      setStatus('generating');
-
-      const result = await generateStudyMaterial(requestData.title, requestData.content, requestData.quizMode);
-      
-      setStatus('formatting');
-      await new Promise(r => setTimeout(r, 1000));
+      const sessionId = await generateSession(requestData);
+      clearTimeout(t1);
+      clearTimeout(t2);
       setStatus('done');
-
-      // Add unique ID and timestamp
-      const newSession = {
-        ...result,
-        id: crypto.randomUUID(),
-        createdAt: new Date().toISOString(),
-        quizMode: requestData.quizMode || 'Multiple Choice'
-      };
-
-      saveSession(newSession);
-      
       setTimeout(() => {
-        navigate(`/study/${newSession.id}/summary`);
-      }, 500);
-
+        navigate(`/study/${sessionId}/summary`);
+      }, 800);
     } catch (err) {
-      console.error(err);
-      setError(true);
-      setStatus('error');
+      clearTimeout(t1);
+      clearTimeout(t2);
     }
   };
 
@@ -67,12 +50,11 @@ export function Processing() {
   }, []);
 
   const handleRetry = () => {
-    hasStarted.current = false;
     startGeneration();
   };
 
-  if (error) {
-    return <AIFailureState onRetry={handleRetry} />;
+  if (streamState.status === 'failed') {
+    return <AIErrorState error={streamState.error} onRetry={handleRetry} />;
   }
 
   const steps = [

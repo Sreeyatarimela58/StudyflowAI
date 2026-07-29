@@ -7,6 +7,7 @@ import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { ProgressBar } from '../components/ProgressBar';
 import { EmptyState } from '../components/EmptyState';
+import { RefinementPanel } from '../components/RefinementPanel';
 
 export function Quiz() {
   const { id } = useParams();
@@ -143,7 +144,7 @@ export function Quiz() {
                     key={idx}
                     onClick={() => handleSelect(idx)}
                     disabled={isAnswered}
-                    className={`w-full text-left p-[24px] rounded-[16px] border-[2px] transition-all duration-300 flex items-center justify-between ${optionStyle}`}
+                    className={`w-full text-left p-[24px] rounded-[16px] border-[2px] transition-all duration-300 flex items-center justify-between focus:outline-none focus-visible:ring-4 focus-visible:ring-[#7B1E2B] dark:focus-visible:ring-[#ECF95A] ${optionStyle}`}
                   >
                     <span className="text-body-lg font-medium dark:text-white">{option}</span>
                     {isAnswered && idx === currentQuestion.correctIndex && (
@@ -181,6 +182,10 @@ export function Quiz() {
           {isAnswered ? (currentIndex < quiz.length - 1 ? 'Next Question' : 'Finish Quiz') : 'Submit Answer'}
           {isAnswered && <ArrowRight className="ml-2 h-5 w-5" />}
         </Button>
+      </div>
+
+      <div className="w-full max-w-4xl mt-[32px]">
+        <RefinementPanel sessionId={id} target="quiz" currentContent={quiz} />
       </div>
     </div>
   );

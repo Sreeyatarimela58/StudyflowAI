@@ -44,7 +44,8 @@ export function Navbar() {
           <div className="flex items-center gap-6">
             <button 
               onClick={toggleTheme} 
-              className="p-3 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors text-black dark:text-white"
+              aria-label="Toggle theme"
+              className="p-3 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors text-black dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#7B1E2B] dark:focus-visible:ring-[#ECF95A]"
             >
               {theme === 'dark' ? <Sun className="h-7 w-7" /> : <Moon className="h-7 w-7" />}
             </button>

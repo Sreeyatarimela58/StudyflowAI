@@ -109,7 +109,7 @@ export function DailyReview() {
                 Quickly memorize the {weakQuestions.length} concepts you missed.
               </p>
             </div>
-            <Button size="lg" onClick={startFlashcards} className="w-full bg-black dark:bg-[#333333] text-white hover:bg-black/80 font-bold border-2 border-black dark:border-[#333333]">
+            <Button size="lg" onClick={startFlashcards} className="w-full bg-black dark:bg-[#ECF95A] text-white dark:text-black hover:bg-black/80 dark:hover:bg-[#c3cf33] font-bold border-2 border-black dark:border-transparent">
               Review Flashcards
             </Button>
           </Card>
@@ -207,7 +207,7 @@ export function DailyReview() {
         </AnimatePresence>
 
         <div className="w-full max-w-4xl flex justify-end">
-          <Button onClick={handleQuizSubmit} disabled={selectedOption === null} size="lg" className={`w-full sm:w-auto px-12 border-2 border-transparent font-bold ${isAnswered ? 'bg-[#7B1E2B] text-white hover:bg-[#8B1E3F]' : 'bg-black text-white hover:bg-black/80'}`}>
+          <Button onClick={handleQuizSubmit} disabled={selectedOption === null} size="lg" className={`w-full sm:w-auto px-12 border-2 border-transparent font-bold ${isAnswered ? 'bg-[#7B1E2B] text-white hover:bg-[#8B1E3F]' : 'bg-black dark:bg-[#ECF95A] text-white dark:text-black hover:bg-black/80 dark:hover:bg-[#c3cf33]'}`}>
             {isAnswered ? (currentIndex < weakQuestions.length - 1 ? 'Next Question' : 'Finish Quiz') : 'Check Answer'}
           </Button>
         </div>
@@ -274,7 +274,7 @@ export function DailyReview() {
                 setMode('hub');
               }
             }}
-            className="flex-1 max-w-[200px] bg-black text-white hover:bg-black/80 font-bold"
+            className="flex-1 max-w-[200px] bg-black dark:bg-[#ECF95A] text-white dark:text-black hover:bg-black/80 dark:hover:bg-[#c3cf33] font-bold"
           >
             {currentIndex < weakQuestions.length - 1 ? 'Next' : 'Finish'}
             <ArrowRight className="ml-2 h-5 w-5" />

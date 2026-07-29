@@ -7,6 +7,7 @@ import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { ProgressBar } from '../components/ProgressBar';
 import { EmptyState } from '../components/EmptyState';
+import { RefinementPanel } from '../components/RefinementPanel';
 
 export function Flashcards() {
   const { id } = useParams();
@@ -86,13 +87,22 @@ export function Flashcards() {
       <div className="relative w-full max-w-4xl aspect-[4/3] md:aspect-[3/2] perspective-1000">
         <AnimatePresence initial={false} mode="wait">
           <motion.div
-            key={currentIndex + (isFlipped ? '-back' : '-front')}
+            key={currentCard?.id || (currentIndex + (isFlipped ? '-back' : '-front'))}
             initial={{ rotateY: isFlipped ? -90 : 90, opacity: 0 }}
             animate={{ rotateY: 0, opacity: 1 }}
             exit={{ rotateY: isFlipped ? 90 : -90, opacity: 0 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-0 w-full h-full cursor-pointer"
+            className="absolute inset-0 w-full h-full cursor-pointer focus:outline-none focus-visible:ring-4 focus-visible:ring-[#7B1E2B] dark:focus-visible:ring-[#ECF95A] rounded-[var(--radius-card)]"
             onClick={() => setIsFlipped(!isFlipped)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setIsFlipped(!isFlipped);
+              }
+            }}
+            tabIndex={0}
+            role="button"
+            aria-label={isFlipped ? "Flashcard definition. Press Space to flip back." : "Flashcard concept. Press Space to flip."}
           >
             <Card className={`w-full h-full p-4 text-center shadow-[var(--shadow-premium)] border-4 border-[#ECF95A] dark:border-[#ECF95A] ${isFlipped ? 'bg-[var(--color-surface)] dark:bg-[#1A1A1A]' : 'bg-[#F4F4F2] dark:bg-black'}`}>
               <div className="w-full h-full flex flex-col items-center justify-center border-4 border-[#7B1E2B] dark:border-[#7B1E2B] relative p-8">
@@ -117,6 +127,7 @@ export function Flashcards() {
           variant="secondary" 
           onClick={handlePrev} 
           disabled={currentIndex === 0}
+          aria-label="Previous card"
           className="w-48 py-6 text-[24px]"
         >
           <ArrowLeft className="mr-4 h-6 w-6" />
@@ -127,11 +138,16 @@ export function Flashcards() {
           variant="primary" 
           onClick={handleNext} 
           disabled={currentIndex === flashcards.length - 1}
+          aria-label="Next card"
           className="w-48 py-6 text-[24px]"
         >
           Next
           <ArrowRight className="ml-4 h-6 w-6" />
         </Button>
+      </div>
+
+      <div className="w-full max-w-4xl mt-[32px]">
+        <RefinementPanel sessionId={id} target="flashcards" currentContent={flashcards} />
       </div>
     </div>
   );

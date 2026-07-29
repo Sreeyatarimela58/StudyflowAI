@@ -119,11 +119,15 @@ export function Dashboard() {
           </div>
         ) : (
           <motion.div variants={itemVariants}>
-            <Card className="p-[80px] border-dashed border-2 border-gray-300 bg-transparent shadow-none text-center">
+            <Card className="p-[80px] border-dashed border-2 border-gray-300 dark:border-gray-700 bg-transparent shadow-none text-center">
               <EmptyState 
                 title="No recent studies" 
                 description="You haven't generated any study materials yet." 
-                icon={Clock}
+                action={
+                  <Link to="/dashboard/new">
+                    <Button>Create your first study session</Button>
+                  </Link>
+                }
               />
             </Card>
           </motion.div>
