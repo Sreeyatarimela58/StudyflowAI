@@ -13,38 +13,29 @@ const port = process.env.PORT || 3001;
 
 const groq = process.env.GROQ_API_KEY ? new Groq({ apiKey: process.env.GROQ_API_KEY }) : null;
 
-app.post('/api/generate', async (req, res) => {
-  try {
-    const { title, content, quizMode } = req.body;
-    const mode = quizMode || 'Multiple Choice';
-    
-    if (!content || content.length < 20) {
-      return res.status(400).json({ error: 'Content is too short or missing' });
-    }
 
-    if (!groq) {
-      // Mock mode if no API key
-      console.log('No GROQ_API_KEY provided. Using mock response.');
-      // Simulate delay
-      await new Promise(r => setTimeout(r, 2000));
-      return res.json({
-        title: title || 'Mock Generated Study',
-        summary: 'This is a mock summary because the API key is missing. The provided content was analyzed to extract key themes and concepts.',
-        recommendations: ['Review basic concepts', 'Try the flashcards multiple times'],
-        flashcards: [
-          { front: 'Mock Concept 1', back: 'Definition of concept 1' },
-          { front: 'Mock Concept 2', back: 'Definition of concept 2' }
-        ],
-        quiz: [
-          {
-            question: mode === 'True/False' ? 'This is a mock true/false statement.' : mode === 'Fill in the Blanks' ? 'This is a mock ____ question.' : 'What is the mock concept?',
-            options: mode === 'True/False' ? ['True', 'False'] : ['Option A', 'Option B', 'Option C', 'Option D'],
-            correctIndex: 1,
-            explanation: 'Option B is correct because this is a mock.'
-          }
-        ]
-      });
-    }
+async function coreGenerate(title, content, mode) {
+  if (!groq) {
+    console.log('No GROQ_API_KEY provided. Using mock response.');
+    await new Promise(r => setTimeout(r, 2000));
+    return {
+      title: title || 'Mock Generated Study',
+      summary: 'This is a mock summary because the API key is missing. The provided content was analyzed to extract key themes and concepts.',
+      recommendations: ['Review basic concepts', 'Try the flashcards multiple times'],
+      flashcards: [
+        { front: 'Mock Concept 1', back: 'Definition of concept 1' },
+        { front: 'Mock Concept 2', back: 'Definition of concept 2' }
+      ],
+      quiz: [
+        {
+          question: mode === 'True/False' ? 'This is a mock true/false statement.' : mode === 'Fill in the Blanks' ? 'This is a mock ____ question.' : 'What is the mock concept?',
+          options: mode === 'True/False' ? ['True', 'False'] : ['Option A', 'Option B', 'Option C', 'Option D'],
+          correctIndex: 1,
+          explanation: 'Option B is correct because this is a mock.'
+        }
+      ]
+    };
+  }
 
     // The prompt now delegates length entirely to the LLM based on concepts
 
@@ -212,8 +203,19 @@ ${title ? `Title: ${title}\n` : ''}${content}`;
     });
 
     const resultText = response.choices[0].message.content;
-    const resultJson = JSON.parse(resultText);
+    return JSON.parse(resultText);
+}
 
+app.post('/api/generate', async (req, res) => {
+  try {
+    const { title, content, quizMode } = req.body;
+    const mode = quizMode || 'Multiple Choice';
+    
+    if (!content || content.length < 20) {
+      return res.status(400).json({ error: 'Content is too short or missing' });
+    }
+
+    const resultJson = await coreGenerate(title, content, mode);
     res.json(resultJson);
   } catch (error) {
     console.error('AI Generation Error:', error.message || error);
@@ -237,6 +239,115 @@ ${title ? `Title: ${title}\n` : ''}${content}`;
         }
       ]
     });
+  }
+});
+
+
+app.post('/api/refine', async (req, res) => {
+  try {
+    const { title, target, content, prompt } = req.body;
+    
+    if (!target || !content || !prompt) {
+      return res.status(400).json({ error: 'Missing required fields: target, content, prompt' });
+    }
+
+    if (!groq) {
+      console.log('No GROQ_API_KEY provided. Using mock refinement.');
+      await new Promise(r => setTimeout(r, 1500));
+      return res.json({
+        target,
+        data: typeof content === 'string' ? content + ' (Refined: ' + prompt + ')' : content
+      });
+    }
+
+    let schema;
+    let targetInstructions;
+
+    if (target === 'summary') {
+      schema = { type: "object", properties: { summary: { type: "string" } }, required: ["summary"] };
+      targetInstructions = "Return a JSON object with a single key 'summary' containing the refined summary text.";
+    } else if (target === 'quiz') {
+      schema = {
+        type: "object",
+        properties: {
+          quiz: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                question: { type: "string" },
+                options: { type: "array", items: { type: "string" } },
+                correctIndex: { type: "number" },
+                explanation: { type: "string" }
+              },
+              required: ["question", "options", "correctIndex", "explanation"]
+            }
+          }
+        },
+        required: ["quiz"]
+      };
+      targetInstructions = "Return a JSON object with a single key 'quiz' containing the refined array of quiz questions.";
+    } else if (target === 'flashcards') {
+      schema = {
+        type: "object",
+        properties: {
+          flashcards: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: { front: { type: "string" }, back: { type: "string" } },
+              required: ["front", "back"]
+            }
+          }
+        },
+        required: ["flashcards"]
+      };
+      targetInstructions = "Return a JSON object with a single key 'flashcards' containing the refined array of flashcards.";
+    } else if (target === 'recommendations') {
+      schema = {
+        type: "object",
+        properties: { recommendations: { type: "array", items: { type: "string" } } },
+        required: ["recommendations"]
+      };
+      targetInstructions = "Return a JSON object with a single key 'recommendations' containing the refined array of recommendations.";
+    } else {
+      return res.status(400).json({ error: 'Invalid target section' });
+    }
+
+    const systemPrompt = `You are StudyFlow AI, an expert educational assistant.
+Your task is to refine a specific section of a study session based on the user's request.
+${title ? `Session Title: ${title}` : ''}
+Target Section: ${target}
+
+Current Content:
+${JSON.stringify(content, null, 2)}
+
+User Request:
+"${prompt}"
+
+Instructions:
+1. Apply the user's request to the current content.
+2. If they ask to "Add more", generate additional high-quality items and append them.
+3. If they ask to "Make it harder", rewrite the items to be more difficult.
+4. If they ask to "Simplify", rewrite to be easier to understand.
+5. ${targetInstructions}
+6. Respond ONLY with a valid JSON object exactly matching the requested schema. Do not include markdown blocks or any other text. Properly escape all double quotes inside strings.`;
+
+    const response = await groq.chat.completions.create({
+      model: 'llama-3.1-8b-instant',
+      messages: [{ role: 'user', content: systemPrompt }],
+      response_format: { type: 'json_object' }
+    });
+
+    const resultJson = JSON.parse(response.choices[0].message.content);
+    
+    // We only want the data inside the target key
+    const refinedData = resultJson[target] || resultJson;
+
+    res.json({ target, data: refinedData });
+  } catch (error) {
+    console.error('AI Refinement Error:', error.message || error);
+    res.status(500).json({ error: 'Failed to refine section' });
   }
 });
 
@@ -319,3 +430,4 @@ Respond ONLY with a valid JSON object matching this structure:
 app.listen(port, () => {
   console.log(`Backend server running on port ${port}`);
 });
+// Nodemon trigger

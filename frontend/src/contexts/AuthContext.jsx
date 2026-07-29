@@ -16,16 +16,23 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    // Mock login API call
+    // Mock login API call against "database"
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        if (email && password) {
-          const userData = { id: '1', name: 'Student', email };
+        if (!email || !password) {
+          reject(new Error('Invalid credentials'));
+          return;
+        }
+        const usersDb = JSON.parse(localStorage.getItem('studyflow_users_db') || '[]');
+        const user = usersDb.find(u => u.email === email && u.password === password);
+        
+        if (user) {
+          const { password, ...userData } = user; // don't store password in active session
           setUser(userData);
           localStorage.setItem('studyflow_user', JSON.stringify(userData));
           resolve(userData);
         } else {
-          reject(new Error('Invalid credentials'));
+          reject(new Error('Incorrect email or password'));
         }
       }, 1000);
     });
@@ -33,9 +40,19 @@ export function AuthProvider({ children }) {
 
   const signup = async (name, email, password) => {
     // Mock signup API call
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       setTimeout(() => {
-        const userData = { id: '1', name, email };
+        const usersDb = JSON.parse(localStorage.getItem('studyflow_users_db') || '[]');
+        if (usersDb.some(u => u.email === email)) {
+          reject(new Error('User already exists'));
+          return;
+        }
+
+        const newUser = { id: Date.now().toString(), name, email, password };
+        usersDb.push(newUser);
+        localStorage.setItem('studyflow_users_db', JSON.stringify(usersDb));
+
+        const { password: _, ...userData } = newUser;
         setUser(userData);
         localStorage.setItem('studyflow_user', JSON.stringify(userData));
         resolve(userData);
