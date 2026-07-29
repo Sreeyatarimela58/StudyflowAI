@@ -73,6 +73,33 @@ export function StudySummary() {
 
       <div className="grid md:grid-cols-3 gap-[32px] w-full">
         <div className="md:col-span-2 space-y-[32px]">
+          {session.quizResults && (
+            <motion.div variants={itemVariants}>
+              <Card className="p-[40px] md:p-[64px] bg-white border-4 border-black shadow-none mb-[32px]">
+                <h2 className="flex items-center text-headline-xl font-display font-bold mb-12 text-black">
+                  <Brain className="mr-4 h-10 w-10 text-[#7B1E2B]" />
+                  Detailed Analysis
+                </h2>
+                <div className="grid md:grid-cols-2 gap-[40px]">
+                  <div className="bg-[#F4F4F2] p-[32px] rounded-[24px] border-4 border-black hover:border-[#7B1E2B] transition-colors">
+                    <h3 className="text-2xl font-display font-bold text-black mb-6">Strong Areas</h3>
+                    <ul className="list-disc list-inside text-black text-lg space-y-3 font-medium">
+                      <li>Understanding core concepts</li>
+                      <li>Basic terminology</li>
+                    </ul>
+                  </div>
+                  <div className="bg-[#ECF95A] p-[32px] rounded-[24px] border-4 border-black hover:border-[#7B1E2B] transition-colors">
+                    <h3 className="text-2xl font-display font-bold text-black mb-6">Areas to Focus</h3>
+                    <ul className="list-disc list-inside text-black text-lg space-y-3 font-medium">
+                      <li>Advanced application</li>
+                      <li>Specific edge cases</li>
+                    </ul>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+          )}
+
           <motion.div variants={itemVariants}>
             <Card className="p-[40px] md:p-[64px] border-2 border-[#c3cf33]">
               <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black">
@@ -105,33 +132,6 @@ export function StudySummary() {
               </ul>
             </Card>
           </motion.div>
-
-          {session.quizResults && (
-            <motion.div variants={itemVariants}>
-              <Card className="p-[40px] md:p-[64px] bg-white border-2 border-[#c3cf33] shadow-none text-[var(--color-charcoal)]">
-                <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black">
-                  <Brain className="mr-4 h-8 w-8 text-[#c3cf33]" />
-                  Detailed Analysis
-                </h2>
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="bg-green-50 p-6 rounded-2xl border-2 border-green-200">
-                    <h3 className="text-xl font-bold text-green-800 mb-4">Strong Areas</h3>
-                    <ul className="list-disc list-inside text-green-700 space-y-2">
-                      <li>Understanding core concepts</li>
-                      <li>Basic terminology</li>
-                    </ul>
-                  </div>
-                  <div className="bg-red-50 p-6 rounded-2xl border-2 border-red-200">
-                    <h3 className="text-xl font-bold text-red-800 mb-4">Areas to Focus</h3>
-                    <ul className="list-disc list-inside text-red-700 space-y-2">
-                      <li>Advanced application</li>
-                      <li>Specific edge cases</li>
-                    </ul>
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
-          )}
         </div>
 
         <div className="space-y-[32px]">

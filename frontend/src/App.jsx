@@ -19,6 +19,7 @@ import { QuizReview } from './pages/QuizReview';
 import { Library } from './pages/Library';
 import { Profile } from './pages/Profile';
 import { Progress } from './pages/Progress';
+import { DailyReview } from './pages/DailyReview';
 
 const ProtectedRoute = ({ children }) => {
   const { user, isLoading } = useAuth();
@@ -43,6 +44,8 @@ function AppRoutes() {
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/dashboard/new" element={<ProtectedRoute><NewStudy /></ProtectedRoute>} />
           <Route path="/dashboard/processing" element={<ProtectedRoute><Processing /></ProtectedRoute>} />
+          
+          <Route path="/daily-review" element={<ProtectedRoute><DailyReview /></ProtectedRoute>} />
           
           <Route path="/study/:id/progress" element={<ProtectedRoute><Progress /></ProtectedRoute>} />
           <Route path="/study/:id/summary" element={<ProtectedRoute><StudySummary /></ProtectedRoute>} />

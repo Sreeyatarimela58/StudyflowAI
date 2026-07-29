@@ -45,24 +45,19 @@ export function Dashboard() {
         </Link>
       </motion.div>
 
-      {/* Top 3 Cards Grid */}
-      <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-3 gap-[24px] w-full mb-[60px]">
-        {/* Knowledge Graph Placeholder */}
-        <motion.div variants={itemVariants} className="col-span-1 h-[250px]">
-          <Card className="bg-[#ECF95A] border-4 border-[#7B1E2B] flex flex-col items-center justify-center p-[32px] h-full text-center">
-            <BrainCircuit className="h-12 w-12 text-[#7B1E2B] mb-4" />
-            <h3 className="font-display font-bold text-headline-lg text-black mb-2">Knowledge Graph</h3>
-            <p className="text-sm font-medium text-black/70">Connecting your study concepts...</p>
-          </Card>
-        </motion.div>
-
-        {/* Daily Review Placeholder */}
+      {/* Top Cards Grid */}
+      <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 gap-[24px] w-full mb-[60px]">
+        {/* Daily Review */}
         <motion.div variants={itemVariants} className="col-span-1 h-[250px]">
           <Card className="bg-white border-4 border-black flex flex-col items-center justify-center p-[32px] h-full text-center">
             <Calendar className="h-12 w-12 text-black mb-4" />
             <h3 className="font-display font-bold text-headline-lg text-black mb-2">Daily Review</h3>
-            <p className="text-sm font-medium text-black/70">3 topics need your attention today.</p>
-            <Button variant="secondary" size="sm" className="mt-4">Start Review</Button>
+            <p className="text-sm font-medium text-black/70 mb-4">Focus on your weak concepts across sessions.</p>
+            <Link to="/daily-review">
+              <Button size="lg" className="border-2 border-black bg-[#ECF95A] hover:bg-[#c3cf33] text-black font-bold">
+                Start Review
+              </Button>
+            </Link>
           </Card>
         </motion.div>
 
@@ -75,7 +70,7 @@ export function Dashboard() {
               <>
                 <p className="text-sm font-medium text-black/70 line-clamp-1 mb-4">{latestSession.title || 'Untitled Session'}</p>
                 <Link to={`/study/${latestSession.id}/summary`}>
-                  <Button className="bg-[#7B1E2B] text-white hover:bg-[#8B1E3F] border-none">Resume</Button>
+                  <Button className="bg-[#7B1E2B] text-white hover:bg-[#8B1E3F] border-none font-bold" size="lg">Resume</Button>
                 </Link>
               </>
             ) : (
