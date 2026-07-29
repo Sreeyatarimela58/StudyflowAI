@@ -118,7 +118,7 @@ export function StudySummary() {
             <Card className="p-[40px] md:p-[64px] bg-white border-2 border-[#c3cf33] shadow-none text-[var(--color-charcoal)]">
               <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black">
                 <CheckCircle2 className="mr-4 h-8 w-8 text-[#c3cf33]" />
-                AI Recommendations
+                Key Takeaways
               </h2>
               <ul className="space-y-6">
                 {session.recommendations?.map((rec, i) => (
@@ -130,6 +130,18 @@ export function StudySummary() {
                   </li>
                 ))}
               </ul>
+            </Card>
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <Card className="p-[40px] md:p-[64px] bg-[#F4F4F2] border-2 border-black shadow-none text-[var(--color-charcoal)] mt-[32px]">
+              <h2 className="flex items-center text-headline-lg font-display font-bold mb-8 text-black">
+                <Brain className="mr-4 h-8 w-8 text-[#7B1E2B]" />
+                AI Recommendations
+              </h2>
+              <p className="text-body-lg text-black font-medium leading-relaxed">
+                {session.aiRecommendations || "Based on this session, I recommend focusing on the core concepts first. Try taking the targeted quiz to assess your baseline understanding, then use the flashcards to drill the terminology. Re-read the sections on the more complex topics if your quiz score is below 80%."}
+              </p>
             </Card>
           </motion.div>
         </div>

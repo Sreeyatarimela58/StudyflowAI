@@ -57,16 +57,7 @@ export function Library() {
       animate="visible"
       variants={containerVariants}
     >
-      <motion.div variants={itemVariants} className="w-full flex flex-col md:flex-row justify-between md:items-end mb-[64px] gap-6">
-        <div>
-          <h1 className="text-[72px] font-display font-bold mb-4 leading-none tracking-tight">Study <span className="italic font-normal text-[#7B1E2B]">Library</span></h1>
-          <p className="text-body-lg text-[var(--color-gray)] mt-2">All your generated knowledge in one place.</p>
-        </div>
-        
-        <Link to="/dashboard/new">
-          <Button className="w-full md:w-auto px-12 py-6 text-[28px] bg-[#ECF95A] text-black hover:bg-[#c3cf33] border-none">Start New Study</Button>
-        </Link>
-      </motion.div>
+     
 
       <motion.div variants={itemVariants} className="w-full flex flex-col sm:flex-row gap-4 mb-12">
         <div className="relative flex-grow">

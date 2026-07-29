@@ -48,11 +48,11 @@ export function Dashboard() {
       {/* Top Cards Grid */}
       <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 gap-[24px] w-full mb-[60px]">
         {/* Daily Review */}
-        <motion.div variants={itemVariants} className="col-span-1 h-[250px]">
-          <Card className="bg-white border-4 border-black flex flex-col items-center justify-center p-[32px] h-full text-center">
-            <Calendar className="h-12 w-12 text-black mb-4" />
-            <h3 className="font-display font-bold text-headline-lg text-black mb-2">Daily Review</h3>
-            <p className="text-sm font-medium text-black/70 mb-4">Focus on your weak concepts across sessions.</p>
+        <motion.div variants={itemVariants} className="col-span-1">
+          <Card className="bg-white border-4 border-black flex flex-col items-center justify-center p-[40px] min-h-[320px] text-center">
+            <Calendar className="h-16 w-16 text-black mb-6" />
+            <h3 className="font-display font-bold text-[32px] text-black mb-3">Daily Review</h3>
+            <p className="text-lg font-medium text-black/70 mb-6">Focus on your weak concepts across sessions.</p>
             <Link to="/daily-review">
               <Button size="lg" className="border-2 border-black bg-[#ECF95A] hover:bg-[#c3cf33] text-black font-bold">
                 Start Review
@@ -62,13 +62,13 @@ export function Dashboard() {
         </motion.div>
 
         {/* Continue Preparation */}
-        <motion.div variants={itemVariants} className="col-span-1 h-[250px]">
-          <Card className="bg-white border-4 border-black flex flex-col items-center justify-center p-[32px] h-full text-center">
-            <PlayCircle className="h-12 w-12 text-black mb-4" />
-            <h3 className="font-display font-bold text-headline-lg text-black mb-2">Continue Session</h3>
+        <motion.div variants={itemVariants} className="col-span-1">
+          <Card className="bg-white border-4 border-black flex flex-col items-center justify-center p-[40px] min-h-[320px] text-center">
+            <PlayCircle className="h-16 w-16 text-black mb-6" />
+            <h3 className="font-display font-bold text-[32px] text-black mb-3">Continue Session</h3>
             {latestSession ? (
               <>
-                <p className="text-sm font-medium text-black/70 line-clamp-1 mb-4">{latestSession.title || 'Untitled Session'}</p>
+                <p className="text-lg font-medium text-black/70 line-clamp-1 mb-6">{latestSession.title || 'Untitled Session'}</p>
                 <Link to={`/study/${latestSession.id}/summary`}>
                   <Button className="bg-[#7B1E2B] text-white hover:bg-[#8B1E3F] border-none font-bold" size="lg">Resume</Button>
                 </Link>
@@ -95,7 +95,7 @@ export function Dashboard() {
           <div className="grid gap-[24px]">
             {recentSessions.map(session => (
               <motion.div key={session.id} variants={itemVariants}>
-                <Link to={`/study/${session.id}/summary`}>
+                <Link to={`/study/${session.id}/summary`} className="block transform transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1">
                   <Card className="p-[32px] flex flex-col sm:flex-row sm:items-center justify-between shadow-sm border-2 border-black hover:border-[#7B1E2B] transition-colors">
                     <div className="flex items-center gap-6">
                       <div className="bg-[#F4F4F2] p-4 rounded-[16px] hidden sm:block border-2 border-transparent">
