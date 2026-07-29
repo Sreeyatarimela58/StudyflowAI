@@ -62,29 +62,6 @@ export function RefinementPanel({ sessionId, target, currentContent }) {
         ))}
       </div>
 
-      <form 
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleRefine(prompt);
-        }}
-        className="flex gap-2"
-      >
-        <input
-          type="text"
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Or type a custom instruction..."
-          className="flex-1 bg-white dark:bg-[#333] border border-black/10 dark:border-white/10 rounded-[12px] px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#7B1E2B] dark:focus:ring-[#ECF95A]"
-        />
-        <Button 
-          type="submit" 
-          disabled={!prompt.trim() || isRefining}
-          className="bg-[#7B1E2B] text-white hover:bg-[#8B1E3F] border-none px-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#7B1E2B] dark:focus-visible:ring-[#ECF95A] dark:focus-visible:ring-offset-[#1A1A1A]"
-          aria-label="Submit refinement"
-        >
-          <ArrowRight className="h-5 w-5" />
-        </Button>
-      </form>
 
       {error && (
         <div className="mt-4">
